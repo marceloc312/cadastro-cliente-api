@@ -50,7 +50,7 @@ namespace Api.Core.Facades
             try
             {
                 _logger.LogInformation($"Enviando requisição GET dos Municípios do Estado {idEstado}.");
-                var response = await _restClientEstadosService.GetAsync();
+                var response = await _restClientEstadosService.GetAsync(idEstado.ToString());
                 var mensagemDeResposta = await response.Content.ReadAsStringAsync();
                 _logger.LogInformation($"Consulta executada com StatusCode: {response.StatusCode} Conteudo de retorno: {mensagemDeResposta}");
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)

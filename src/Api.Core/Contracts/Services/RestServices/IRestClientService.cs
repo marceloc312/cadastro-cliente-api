@@ -5,6 +5,6 @@ namespace Api.Core.Contracts.Services.RestServices
 {
     public interface IRestClientService
     {
-        Task<HttpResponseMessage> GetAsync(string parameterValue);
+        Task<HttpResponseMessage> GetAsync(string valueForTemplate = null);
     }
 }

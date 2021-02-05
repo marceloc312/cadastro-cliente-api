@@ -16,14 +16,18 @@ namespace Api.Core.Services.RestServices
             _aCLRestConfig = aCLRestConfig;
         }
 
-        public async Task<HttpResponseMessage> GetAsync(string parameterValue)
+        public async Task<HttpResponseMessage> GetAsync(string valueForTemplate = null)
         {
             HttpClient httpClient = new HttpClient()
             {
                 BaseAddress = new Uri(_aCLRestConfig.Url),
             };
+            string requestUri = string.Empty;
+            if (!string.IsNullOrEmpty(valueForTemplate))
+                requestUri = string.Format(_aCLRestConfig.TemplateResource, valueForTemplate);
 
-            return await httpClient.GetAsync(string.Format(_aCLRestConfig.TemplateResource, parameterValue));
+            return await httpClient.GetAsync(requestUri);
         }
     }
 }
+

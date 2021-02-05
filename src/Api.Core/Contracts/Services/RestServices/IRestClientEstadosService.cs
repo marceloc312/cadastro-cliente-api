@@ -3,8 +3,7 @@ using System.Threading.Tasks;
 
 namespace Api.Core.Contracts.Services.RestServices
 {
-    public interface IRestClientEstadosService
+    public interface IRestClientEstadosService: IRestClientService
     {
-        Task<HttpResponseMessage> GetAsync();
     }
 }

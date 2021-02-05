@@ -10,22 +10,8 @@ using System.Threading.Tasks;
 
 namespace Api.Core.TestsUnidade
 {
-    public static class TestHelper
+    public static class TestHelperFactory
     {
-        public const string JSON_CEP = @"{
-  ""cep"": ""01001-000"",
-  ""logradouro"": ""Praça da Sé"",
-  ""complemento"": ""lado ímpar"",
-  ""bairro"": ""Sé"",
-  ""localidade"": ""São Paulo"",
-  ""uf"": ""SP"",
-  ""ibge"": ""3550308"",
-  ""gia"": ""1004"",
-  ""ddd"": ""11"",
-  ""siafi"": ""7107""
-}";
-
-
         public static HttpClient CreateHttpClientFake(HttpStatusCode statusCode, string content, Exception exception = null)
         {
             var handlerMock = new Mock<HttpMessageHandler>();
@@ -63,7 +49,7 @@ namespace Api.Core.TestsUnidade
             var restClientCEPService = new Mock<IRestClientCEPService>();
 
             if (exception == null)
-                restClientCEPService.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(TestHelper.CreateHttpClientHttpResponseMessageFake(statusCode,content));
+                restClientCEPService.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(TestHelperFactory.CreateHttpClientHttpResponseMessageFake(statusCode,content));
             else
                 restClientCEPService.Setup(x => x.GetAsync(It.IsAny<string>())).ThrowsAsync(new Exception("Time out"));
 
@@ -76,9 +62,9 @@ namespace Api.Core.TestsUnidade
             var restClientCEPService = new Mock<IRestClientEstadosService>();
 
             if (exception == null)
-                restClientCEPService.Setup(x => x.GetAsync()).ReturnsAsync(TestHelper.CreateHttpClientHttpResponseMessageFake(statusCode, content));
+                restClientCEPService.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(TestHelperFactory.CreateHttpClientHttpResponseMessageFake(statusCode, content));
             else
-                restClientCEPService.Setup(x => x.GetAsync()).ThrowsAsync(new Exception("Time out"));
+                restClientCEPService.Setup(x => x.GetAsync(It.IsAny<string>())).ThrowsAsync(new Exception("Time out"));
 
             return restClientCEPService;
         }

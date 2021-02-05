@@ -33,7 +33,7 @@ namespace Api.Core.TestsUnidade
         public async void DeveRetornarEnderecoPorCEP(string cep)
         {
             // Arrange
-            var restMock = TestHelper.CreateRestClientCEPServiceMock(HttpStatusCode.OK, TestHelper.JSON_CEP);
+            var restMock = TestHelperFactory.CreateRestClientCEPServiceMock(HttpStatusCode.OK, MockJsonValues.Cep());
             var logger = new Mock<ILogger<CepFacade>>();
             CepFacade cepFacade = new CepFacade(restMock.Object, logger.Object);
 
@@ -52,7 +52,7 @@ namespace Api.Core.TestsUnidade
         public async void NaoDeveRetonarEnderecoPorCep(string cep)
         {
             // Arrange
-            var restMock = TestHelper.CreateRestClientCEPServiceMock(HttpStatusCode.OK, TestHelper.JSON_CEP);
+            var restMock = TestHelperFactory.CreateRestClientCEPServiceMock(HttpStatusCode.OK, MockJsonValues.Cep());
             var logger = new Mock<ILogger<CepFacade>>();
             CepFacade cepFacade = new CepFacade(restMock.Object, logger.Object);
 
@@ -72,7 +72,7 @@ namespace Api.Core.TestsUnidade
         public async void NaoDeveRetonarEnderecoPorCepEDeveLogar(string cep)
         {
             // Arrange
-            var restMock = TestHelper.CreateRestClientCEPServiceMock(HttpStatusCode.InternalServerError, "Erro interno de servidor");
+            var restMock = TestHelperFactory.CreateRestClientCEPServiceMock(HttpStatusCode.InternalServerError, "Erro interno de servidor");
             var logger = new Mock<ILogger<CepFacade>>();
             CepFacade cepFacade = new CepFacade(restMock.Object, logger.Object);
 
@@ -92,7 +92,7 @@ namespace Api.Core.TestsUnidade
         public async void NaoDeveRetonarEnderecoPorCepEDeveLogar_HouveFalhaNaComunicacao(string cep)
         {
             // Arrange
-            var restMock = TestHelper.CreateRestClientCEPServiceMock(HttpStatusCode.InternalServerError, null, new Exception("Time out"));
+            var restMock = TestHelperFactory.CreateRestClientCEPServiceMock(HttpStatusCode.InternalServerError, null, new Exception("Time out"));
             var logger = new Mock<ILogger<CepFacade>>();
             CepFacade cepFacade = new CepFacade(restMock.Object, logger.Object);
 

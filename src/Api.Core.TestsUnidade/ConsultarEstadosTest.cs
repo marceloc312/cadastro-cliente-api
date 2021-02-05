@@ -24,7 +24,7 @@ namespace Api.Core.TestsUnidade
         public async void DeveRetornarTodosOsEstados()
         {
             // Arrange
-            var restMock = TestHelper.CreateRestEstadosServiceMock(HttpStatusCode.OK, ConstantsJSON.JSON_ESTADOS);
+            var restMock = TestHelperFactory.CreateRestEstadosServiceMock(HttpStatusCode.OK, MockJsonValues.Ufs());
             var logger = new Mock<ILogger<EstadosFacade>>();
             IEstadosFacade estadoFacade = new EstadosFacade(logger.Object,restMock.Object);
 
@@ -40,7 +40,7 @@ namespace Api.Core.TestsUnidade
         public async void NaoDeveRetornarTodosOsEstados()
         {
             // Arrange
-            var restMock = TestHelper.CreateRestEstadosServiceMock(HttpStatusCode.BadRequest, "Erro ao retornar estados");
+            var restMock = TestHelperFactory.CreateRestEstadosServiceMock(HttpStatusCode.BadRequest, "Erro ao retornar estados");
             var logger = new Mock<ILogger<EstadosFacade>>();
             IEstadosFacade estadoFacade = new EstadosFacade(logger.Object, restMock.Object);
 
@@ -58,7 +58,7 @@ namespace Api.Core.TestsUnidade
         public async void NaoDeveRetornarTodosOsEstadosEDeveLogar_HouveFalhaNaComunicacao()
         {
             // Arrange
-            var restMock = TestHelper.CreateRestEstadosServiceMock(HttpStatusCode.BadRequest, "Erro ao retornar estados",new Exception("Time out"));
+            var restMock = TestHelperFactory.CreateRestEstadosServiceMock(HttpStatusCode.BadRequest, "Erro ao retornar estados",new Exception("Time out"));
             var logger = new Mock<ILogger<EstadosFacade>>();
             IEstadosFacade estadoFacade = new EstadosFacade(logger.Object, restMock.Object);
 
