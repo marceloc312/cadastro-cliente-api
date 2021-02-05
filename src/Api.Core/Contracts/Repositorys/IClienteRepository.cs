@@ -8,6 +8,6 @@ namespace Api.Core.Contracts.Repositorys
 {
     public interface IClienteRepository
     {
-        Task<ClienteDTO> FindAsync(string cpf);
+        Task<ClienteDTO> BuscarPorCpfAsync(string cpf);
     }
 }

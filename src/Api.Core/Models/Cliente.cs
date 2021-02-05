@@ -7,11 +7,17 @@ namespace Api.Core.Models
 {
     public class Cliente
     {
-        private ClienteDTO clienteDTO;
-
-        public Cliente(ClienteDTO clienteDTO)
+        public Cliente()
         {
-            this.clienteDTO = clienteDTO;
         }
+
+        public Cliente(string nome, string noCpfme)
+        {
+            Nome = nome;
+            NoCpfme = noCpfme;
+        }
+
+        public string Nome { get; set; }
+        public string NoCpfme { get; set; }
     }
 }
