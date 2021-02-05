@@ -25,6 +25,7 @@ namespace Api.Core.TestsUnidade
   ""siafi"": ""7107""
 }";
 
+
         public static HttpClient CreateHttpClientFake(HttpStatusCode statusCode, string content, Exception exception = null)
         {
             var handlerMock = new Mock<HttpMessageHandler>();
@@ -65,6 +66,19 @@ namespace Api.Core.TestsUnidade
                 restClientCEPService.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(TestHelper.CreateHttpClientHttpResponseMessageFake(statusCode,content));
             else
                 restClientCEPService.Setup(x => x.GetAsync(It.IsAny<string>())).ThrowsAsync(new Exception("Time out"));
+
+            return restClientCEPService;
+        }
+
+        public static Mock<IRestClientEstadosService> CreateRestEstadosServiceMock(HttpStatusCode statusCode, string content, Exception exception = null)
+        {
+
+            var restClientCEPService = new Mock<IRestClientEstadosService>();
+
+            if (exception == null)
+                restClientCEPService.Setup(x => x.GetAsync()).ReturnsAsync(TestHelper.CreateHttpClientHttpResponseMessageFake(statusCode, content));
+            else
+                restClientCEPService.Setup(x => x.GetAsync()).ThrowsAsync(new Exception("Time out"));
 
             return restClientCEPService;
         }

@@ -8,19 +8,24 @@ namespace Api.Core.DTOs
     {
     }
 
+    //public class Rootobject
+    //{
+    //    public Class1[] Property1 { get; set; }
+    //}
 
-    public class CepDTO
+    public class EstadoDTO
     {
-        public string cep { get; set; }
-        public string logradouro { get; set; }
-        public string complemento { get; set; }
-        public string bairro { get; set; }
-        public string localidade { get; set; }
-        public string uf { get; set; }
-        public string ibge { get; set; }
-        public string gia { get; set; }
-        public string ddd { get; set; }
-        public string siafi { get; set; }
+        public int id { get; set; }
+        public string sigla { get; set; }
+        public string nome { get; set; }
+        public RegiaoDTO regiao { get; set; }
+    }
+
+    public class RegiaoDTO
+    {
+        public int id { get; set; }
+        public string sigla { get; set; }
+        public string nome { get; set; }
     }
 
 }
