@@ -1,4 +1,7 @@
-﻿namespace Api.Core.TestsUnidade
+﻿using System;
+using System.IO;
+
+namespace Api.Core.TestsUnidade
 {
     public static class ConstantsJSON
     {
@@ -274,5 +277,14 @@
         }
     }
 ]";
+
+        public static string GetJSON_Municipios_SP()
+        {
+            string dirAtual = Environment.CurrentDirectory;
+            string fileName = Path.Combine(dirAtual.Substring(0, dirAtual.IndexOf(@"src\")),"src", typeof(ConsultarMuniciosTest).Assembly.GetName().Name, "Arquivos", "municipios-sp.json");
+
+            string jsonText = File.ReadAllText(fileName);
+            return jsonText;
+        }
     }
 }

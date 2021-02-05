@@ -1,5 +1,6 @@
 ﻿using Api.Core.Contracts.Facades;
 using Api.Core.DTOs;
+using Api.Core.DTOs.ACL;
 using Api.Core.Facades;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -28,7 +29,7 @@ namespace Api.Core.TestsUnidade
             IEstadosFacade estadoFacade = new EstadosFacade(logger.Object,restMock.Object);
 
             // Act
-            IEnumerable<EstadoDTO> estados= await estadoFacade.Buscar();
+            IEnumerable<UFDTO> estados= await estadoFacade.ListarUFs();
 
             // Assert
             Assert.Equal(27,estados.Count());
@@ -44,7 +45,7 @@ namespace Api.Core.TestsUnidade
             IEstadosFacade estadoFacade = new EstadosFacade(logger.Object, restMock.Object);
 
             // Act
-            IEnumerable<EstadoDTO> estados = await estadoFacade.Buscar();
+            IEnumerable<UFDTO> estados = await estadoFacade.ListarUFs();
 
             // Assert
             Assert.Empty(estados);
@@ -62,7 +63,7 @@ namespace Api.Core.TestsUnidade
             IEstadosFacade estadoFacade = new EstadosFacade(logger.Object, restMock.Object);
 
             // Act
-            IEnumerable<EstadoDTO> estados = await estadoFacade.Buscar();
+            IEnumerable<UFDTO> estados = await estadoFacade.ListarUFs();
 
             // Assert
             Assert.Empty(estados);
