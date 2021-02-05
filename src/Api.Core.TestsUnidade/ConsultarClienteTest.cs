@@ -54,7 +54,5 @@ namespace Api.Core.TestsUnidade
             // Assert
             Assert.Null(cliente);
         }
-
-
     }
 }
