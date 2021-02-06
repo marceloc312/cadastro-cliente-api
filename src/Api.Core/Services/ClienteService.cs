@@ -28,9 +28,8 @@ namespace Api.Core.Services
             try
             {
                 _logger.LogInformation($"Consultando no banco o cpf {cpf}");
-                ClienteDTO clienteDTO = await _clienteRepository.BuscarPorCpfAsync(cpf);
+                result = await _clienteRepository.BuscarPorCpfAsync(cpf);
                 _logger.LogInformation("Cpf consultado com sucesso");
-                return clienteDTO != default ? new Cliente(clienteDTO.Nome, clienteDTO.Cpf) : null;
             }
             catch(Exception ex)
             {

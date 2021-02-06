@@ -2,7 +2,7 @@
 
 namespace Api.Core.Models.Specifications
 {
-    internal class EnderecoClienteCidadeNaoInformadaSpec : ISpecification<EnderecoCliente>
+    internal class EnderecoClienteCidadeInformadaSpec : ISpecification<EnderecoCliente>
     {
         public bool IsSatisfiedBy(EnderecoCliente entity)
         {

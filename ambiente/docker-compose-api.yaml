@@ -1,0 +1,11 @@
+version: "3.1"
+services:
+  api:
+    container_name: financeiro-api
+    build: ../financeiro-api
+    image: financeiro-api
+    environment:
+      - ConnectionStrings:MySql=Server=192.168.0.5; Port=3306; Database=fin; Uid=root; Pwd=senha1234;
+      - ElasticConfiguration:Uri=http://192.168.0.5:9200
+    ports:
+      - "8080:80"

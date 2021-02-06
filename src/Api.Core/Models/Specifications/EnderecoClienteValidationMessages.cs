@@ -7,6 +7,7 @@
         internal const string CAMPO_CIDADE_NAO_INFORMADO=@"[Cidade] não informada";
         internal const string PAIS_NAO_INFORMADO=@"[País] não informado";
         internal const string CEP_INVALIDO = @"[CEP] informado inválido";
-        internal static string ID_CLIENTE_NAO_ATRIBUIDO="Id do cliente não foi informado";
+        internal const string ESTADO_NAO_INFORMADO =@"UF inválida";
+        internal const string ID_CLIENTE_NAO_ATRIBUIDO="Id do cliente não foi informado";
     }
 }

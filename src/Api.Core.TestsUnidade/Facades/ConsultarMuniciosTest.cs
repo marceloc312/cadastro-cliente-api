@@ -13,13 +13,13 @@ using Xunit;
 
 namespace Api.Core.TestsUnidade
 {
+        [Trait("[Testes Unitários] Estados Facade", "Consulta Municipios por Estado")]
     public partial class ConsultarMuniciosTest
     {
         public ConsultarMuniciosTest()
         {
         }
 
-        [Trait("Estados Facade", "Consulta Municipios por Estado")]
         [Theory(DisplayName = "Deve listar todos os municípios do Estado")]
         [InlineData(35)]
         public async void DeveRetornarTodosOsMunicipiosPorEstados(int idEstado)
@@ -41,7 +41,6 @@ namespace Api.Core.TestsUnidade
             municipios.FirstOrDefault().microrregiao.mesorregiao.UF.regiao.sigla.Should().Be("SE");
         }
 
-        [Trait("Estados Facade", "Consulta Municipios por Estado")]
         [Theory(DisplayName = "Resposta incorreta da Api de municipios de terceiros. Não deve retornar lista de municipios e deve logar")]
         [InlineData(89098888)]
         [InlineData(356)]
@@ -61,7 +60,6 @@ namespace Api.Core.TestsUnidade
             logger._AssertLog(LogLevel.Information, "Consulta executada com StatusCode", 1);
         }
 
-        [Trait("Estados Facade", "Consulta Municipios por Estado")]
         [Fact(DisplayName = "Falha na comunicação com a Api de terceiros")]
         public async void NaoDeveRetornarTodosOsEstadosEDeveLogar_HouveFalhaNaComunicacao()
         {

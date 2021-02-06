@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Api.Core.Models.Specifications
 {
-    internal class EnderecoClienteCEPInvalidoSpec : ISpecification<EnderecoCliente>
+    internal class EnderecoClienteCEPSpec : ISpecification<EnderecoCliente>
     {
         public bool IsSatisfiedBy(EnderecoCliente entity)
         {

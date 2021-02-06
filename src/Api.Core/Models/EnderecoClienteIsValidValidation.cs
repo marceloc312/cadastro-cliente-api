@@ -8,13 +8,13 @@ namespace Api.Core.Models
     {
         public EnderecoClienteIsValidValidation()
         {
-            base.AddRule(new ValidationRule<EnderecoCliente>(new EnderecoClienteLogradouroVazioSpec(), EnderecoClienteValidationMessages.LOGRADOURO_NAO_INFORMADO));
-            base.AddRule(new ValidationRule<EnderecoCliente>(new EnderecoClienteNumeroVazioSpec(), EnderecoClienteValidationMessages.NUMERO_NAO_INFORMADO));
-            base.AddRule(new ValidationRule<EnderecoCliente>(new EnderecoClienteCidadeNaoInformadaSpec(), EnderecoClienteValidationMessages.CAMPO_CIDADE_NAO_INFORMADO));
-            base.AddRule(new ValidationRule<EnderecoCliente>(new EnderecoClientePaisNaoInformadoSpec(), EnderecoClienteValidationMessages.PAIS_NAO_INFORMADO));
-            base.AddRule(new ValidationRule<EnderecoCliente>(new EnderecoClienteCEPInvalidoSpec(), EnderecoClienteValidationMessages.CEP_INVALIDO));
-            base.AddRule(new ValidationRule<EnderecoCliente>(new EnderecoClienteSemIdClienteSpec(), EnderecoClienteValidationMessages.ID_CLIENTE_NAO_ATRIBUIDO));            
+            base.AddRule(new ValidationRule<EnderecoCliente>(new EnderecoClienteLogradouroSpec(), EnderecoClienteValidationMessages.LOGRADOURO_NAO_INFORMADO));
+            base.AddRule(new ValidationRule<EnderecoCliente>(new EnderecoClienteNumeroSpec(), EnderecoClienteValidationMessages.NUMERO_NAO_INFORMADO));
+            base.AddRule(new ValidationRule<EnderecoCliente>(new EnderecoClienteCidadeInformadaSpec(), EnderecoClienteValidationMessages.CAMPO_CIDADE_NAO_INFORMADO));
+            base.AddRule(new ValidationRule<EnderecoCliente>(new EnderecoClientePaisInformadoSpec(), EnderecoClienteValidationMessages.PAIS_NAO_INFORMADO));
+            base.AddRule(new ValidationRule<EnderecoCliente>(new EnderecoClienteCEPSpec(), EnderecoClienteValidationMessages.CEP_INVALIDO));
+            base.AddRule(new ValidationRule<EnderecoCliente>(new EnderecoClienteIdClienteSpec(), EnderecoClienteValidationMessages.ID_CLIENTE_NAO_ATRIBUIDO));
+            base.AddRule(new ValidationRule<EnderecoCliente>(new  EnderecoClienteUFPreenchidoSpec(), EnderecoClienteValidationMessages.ESTADO_NAO_INFORMADO));
         }
-
     }
 }

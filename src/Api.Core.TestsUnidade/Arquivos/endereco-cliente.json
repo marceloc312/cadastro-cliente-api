@@ -6,6 +6,7 @@
     "Numero": "55B",
     "Complemento": "Casa 2",
     "Cidade": "São Paulo",
+    "Estado": "SP",
     "Pais": "Brasil",
     "CEP": "04100-767"
   },
@@ -16,6 +17,7 @@
     "Numero": "456",
     "Complemento": null,
     "Cidade": "Rio de Janeiro",
+    "Estado": "RJ",
     "Pais": "Brasil",
     "CEP": "02100-767"
   },
@@ -26,6 +28,7 @@
     "Numero": "789",
     "Complemento": null,
     "Cidade": "Rio de Janeiro",
+    "Estado": "RJ",
     "Pais": "Brasil",
     "CEP": "02100-001"
   }

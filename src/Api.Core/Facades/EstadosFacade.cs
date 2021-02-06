@@ -36,9 +36,8 @@ namespace Api.Core.Facades
                 {
                     _logger.LogInformation($"Transformando resposta em objeto {nameof(UFDTO)}");
                     var ufs = JsonConvert.DeserializeObject<IEnumerable<UFDTO>>(mensagemDeResposta);
-                    List<UFDTO> ufsOrdenados = Ordenar(ufs);
 
-                    result = ufsOrdenados;
+                    result = Ordenar(ufs);
                 }
             }
             catch (Exception ex)
@@ -49,10 +48,10 @@ namespace Api.Core.Facades
             return result;
         }
 
-        private static List<UFDTO> Ordenar(IEnumerable<UFDTO> ufs)
+        private static IEnumerable<UFDTO> Ordenar(IEnumerable<UFDTO> ufs)
         {
             string[] ufsRank = new[] { "SP", "RJ", "SE", "SC" };
-       
+
             var ufsOrdenados = ufs.OrderBy(x => x.sigla).ToList();
             foreach (var ufRank in ufsRank.Reverse())
             {

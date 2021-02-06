@@ -16,7 +16,7 @@ namespace Api.Core.TestsUnidade
         [Trait(TRAIT_NAME, TRAIT_VALUE)]
     public class ConsultarEnderecoClienteTest
     {
-        private const string TRAIT_NAME = "Endereço Cliente";
+        private const string TRAIT_NAME = "[Testes Unitários] Endereço Cliente";
         private const string TRAIT_VALUE = "Consulta Endereço do cliente";
 
         public ConsultarEnderecoClienteTest()

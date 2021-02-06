@@ -1,4 +1,5 @@
 ﻿using Api.Core.DTOs;
+using Api.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Api.Core.Contracts.Repositorys
 {
     public interface IClienteRepository
     {
-        Task<ClienteDTO> BuscarPorCpfAsync(string cpf);
+        Task<Cliente> BuscarPorCpfAsync(string cpf);
     }
 }
