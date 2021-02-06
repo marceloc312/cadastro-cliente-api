@@ -1,11 +1,11 @@
 ﻿using Api.Core.Models;
-using System.Collections.Generic;
+using Api.Core.Validations;
 using System.Threading.Tasks;
 
 namespace Api.Core.Contracts.Services
 {
     public interface IEnderecoClienteService
     {
-        Task<IEnumerable<EnderecoCliente>> BuscaEnderecosPorIdCliente(long idCliente);
+        Task<ValidateResult> AlterarEndereco(EnderecoCliente enderecoCliente);
     }
 }

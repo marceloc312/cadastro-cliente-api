@@ -13,6 +13,7 @@ using Xunit;
 
 namespace Api.Core.TestsUnidade
 {
+        [Trait(TRAIT_NAME, TRAIT_VALUE)]
     public class ConsultarEnderecoClienteTest
     {
         private const string TRAIT_NAME = "Endereço Cliente";
@@ -22,19 +23,18 @@ namespace Api.Core.TestsUnidade
         {
         }
 
-        [Trait(TRAIT_NAME, TRAIT_VALUE)]
         [Theory(DisplayName = "Deve encontrar lista de endereço do cliente pelo ID do Cliente")]
         [InlineData(1, 2)]
         [InlineData(2, 1)]
         public async void DeveRetornarEnderecoDoClientePeloIdCliente(long idCliente, int qtdEnderecosExistente)
         {
             // Arrange
-            var enderecos = MockJsonValues.EnderecosDTO();
-            var enderecoClienteRepository = new Mock<IEnderecoClienteRepository>();
+            var enderecos = MockJsonValues.Enderecos();
+            var enderecoClienteRepository = new Mock<IEnderecoClienteRepositoryReadOnly>();
             enderecoClienteRepository.Setup(x => x.BuscarPorIdClienteAsync(It.IsAny<long>())).ReturnsAsync((long id) => enderecos.Where(w => w.ClienteId == id));
-            var logger = new Mock<ILogger<EnderecoClienteService>>();
+            var logger = new Mock<ILogger<EnderecoClienteServiceReadOnly>>();
 
-            IEnderecoClienteService enderecoClienteService = new EnderecoClienteService(logger.Object, enderecoClienteRepository.Object);
+            IEnderecoClienteServiceReadonly enderecoClienteService = new EnderecoClienteServiceReadOnly(logger.Object, enderecoClienteRepository.Object);
 
             // Act
             IEnumerable<EnderecoCliente> enderecoCliente = await enderecoClienteService.BuscaEnderecosPorIdCliente(idCliente);
@@ -43,7 +43,6 @@ namespace Api.Core.TestsUnidade
             Assert.Equal(qtdEnderecosExistente, enderecoCliente.Count());
         }
 
-        [Trait(TRAIT_NAME, TRAIT_VALUE)]
         [Theory(DisplayName = "Falha ao conectar com o banco de dados. Não deve retornar endereços do cliente e deve logar erro")]
         [InlineData(1)]
         [InlineData(2)]
@@ -51,12 +50,11 @@ namespace Api.Core.TestsUnidade
         public async void NaoDeveRetonarClienteEDeveLogarErro(long idCliente)
         {
             // Arrange
-            var enderecos = MockJsonValues.EnderecosDTO();
-            var enderecoClienteRepository = new Mock<IEnderecoClienteRepository>();
+            var enderecoClienteRepository = new Mock<IEnderecoClienteRepositoryReadOnly>();
             enderecoClienteRepository.Setup(x => x.BuscarPorIdClienteAsync(It.IsAny<long>())).ThrowsAsync(new Exception("Exceção de banco de dados"));
-            var logger = new Mock<ILogger<EnderecoClienteService>>();
+            var logger = new Mock<ILogger<EnderecoClienteServiceReadOnly>>();
 
-            IEnderecoClienteService enderecoClienteService = new EnderecoClienteService(logger.Object, enderecoClienteRepository.Object);
+            IEnderecoClienteServiceReadonly enderecoClienteService = new EnderecoClienteServiceReadOnly(logger.Object, enderecoClienteRepository.Object);
 
             // Act
             IEnumerable<EnderecoCliente> enderecosCliente = await enderecoClienteService.BuscaEnderecosPorIdCliente(idCliente);

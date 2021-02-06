@@ -24,10 +24,10 @@ namespace Api.Core.TestsUnidade
             return GetTextFromFileFile("cep-001001-000.json");
         }
 
-        public static IEnumerable<EnderecoClienteDTO> EnderecosDTO()
+        public static IEnumerable<EnderecoCliente> Enderecos()
         {
             var jsonText = GetTextFromFileFile("endereco-cliente.json");
-            var listaEnderecos = JsonConvert.DeserializeObject<IEnumerable<EnderecoClienteDTO>>(jsonText);
+            var listaEnderecos = JsonConvert.DeserializeObject<IEnumerable<EnderecoCliente>>(jsonText);
 
             return listaEnderecos;
         }

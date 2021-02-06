@@ -33,6 +33,8 @@ namespace Api.Core.TestsUnidade
 
             // Assert
             Assert.Equal(27,estados.Count());
+            estados.ElementAt(0).sigla.Should().Be("SP");
+            estados.ElementAt(1).sigla.Should().Be("RJ");
         }
 
         [Trait("Estados Facade", "Consulta Lista de Estados")]

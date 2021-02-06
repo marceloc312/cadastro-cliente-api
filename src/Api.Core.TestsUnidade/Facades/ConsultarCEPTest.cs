@@ -52,7 +52,7 @@ namespace Api.Core.TestsUnidade
         public async void NaoDeveRetonarEnderecoPorCep(string cep)
         {
             // Arrange
-            var restMock = TestHelperFactory.CreateRestClientCEPServiceMock(HttpStatusCode.OK, MockJsonValues.Cep());
+            var restMock = TestHelperFactory.CreateRestClientCEPServiceMock(HttpStatusCode.OK, null);
             var logger = new Mock<ILogger<CepFacade>>();
             CepFacade cepFacade = new CepFacade(restMock.Object, logger.Object);
 

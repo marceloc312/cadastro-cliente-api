@@ -1,10 +1,9 @@
 ﻿using Api.Core.Contracts.Repositorys;
 using Api.Core.Contracts.Services;
 using Api.Core.Models;
+using Api.Core.Validations;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.Core.Services
@@ -20,23 +19,24 @@ namespace Api.Core.Services
             _enderecoClienteRepository = enderecoClienteRepository;
         }
 
-        public async Task<IEnumerable<EnderecoCliente>> BuscaEnderecosPorIdCliente(long idCliente)
+        public async Task<ValidateResult> AlterarEndereco(EnderecoCliente enderecoCliente)
         {
-            IEnumerable<EnderecoCliente> result = new List<EnderecoCliente>();
+            var result = new ValidateResult();
             try
             {
-                _logger.LogInformation($"Consultando endereços do cliente {idCliente}, no banco");
-                var enderecos = await _enderecoClienteRepository.BuscarPorIdClienteAsync(idCliente);
+                if (!enderecoCliente.IsValidoForUpdate())
+                    return enderecoCliente.ValidationResult;
 
-                _logger.LogInformation($"Endereços consultados com sucesso");
-
-                result = enderecos.Select(endereco => new EnderecoCliente(endereco.Id, endereco.ClienteId, endereco.Logradouro, endereco.Numero, endereco.Complemento, endereco.Cidade, endereco.Pais, endereco.CEP));
+                _logger.LogInformation($"Alterando endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}");
+                await _enderecoClienteRepository.AlterarAsync(enderecoCliente);
+                _logger.LogInformation($"Endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId} alterado com sucesso");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _logger.LogError($"Erro ao consultar endereços do cliente {idCliente}. {ex}");
+                var guid = Guid.NewGuid();
+                _logger.LogError($"ID de erro: {guid}. Erro ao alterar o endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}. { ex}");
+                result.Add($"Não foi possível efitivar a transação com sucesso. ID: {guid}");
             }
-
             return result;
         }
     }

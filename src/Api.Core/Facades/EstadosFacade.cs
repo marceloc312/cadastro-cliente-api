@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.Core.Facades
@@ -33,7 +35,10 @@ namespace Api.Core.Facades
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     _logger.LogInformation($"Transformando resposta em objeto {nameof(UFDTO)}");
-                    result = JsonConvert.DeserializeObject<IEnumerable<UFDTO>>(mensagemDeResposta);
+                    var ufs = JsonConvert.DeserializeObject<IEnumerable<UFDTO>>(mensagemDeResposta);
+                    List<UFDTO> ufsOrdenados = Ordenar(ufs);
+
+                    result = ufsOrdenados;
                 }
             }
             catch (Exception ex)
@@ -42,6 +47,22 @@ namespace Api.Core.Facades
             }
 
             return result;
+        }
+
+        private static List<UFDTO> Ordenar(IEnumerable<UFDTO> ufs)
+        {
+            string[] ufsRank = new[] { "SP", "RJ", "SE", "SC" };
+       
+            var ufsOrdenados = ufs.OrderBy(x => x.sigla).ToList();
+            foreach (var ufRank in ufsRank.Reverse())
+            {
+                var uf = ufsOrdenados.FirstOrDefault(x => x.sigla == ufRank);
+                int indexUf = ufsOrdenados.FindIndex(x => x.sigla == ufRank);
+                ufsOrdenados.RemoveAt(indexUf);
+                ufsOrdenados.Insert(0, uf);
+            }
+
+            return ufsOrdenados;
         }
 
         public async Task<IEnumerable<MunicipioDTO>> ListarMunicipiosPorEstado(int idEstado)
@@ -67,4 +88,5 @@ namespace Api.Core.Facades
             return result;
         }
     }
+
 }

@@ -15,13 +15,16 @@ using Xunit;
 
 namespace Api.Core.TestsUnidade
 {
-    public class ConsultarClienteTest 
+    [Trait(TRAIT_NAME, TRAIT_VALUE)]
+    public class ConsultarClienteTest
     {
+        private const string TRAIT_NAME = "Cliente";
+        private const string TRAIT_VALUE = "Consulta CPF";
+
         public ConsultarClienteTest()
         {
         }
 
-        [Trait("Cliente", "Consulta CPF")]
         [Theory(DisplayName = "Deve encontrar cliente pelo CPF")]
         [InlineData("09878923467")]
         [InlineData("89897776")]
@@ -32,7 +35,7 @@ namespace Api.Core.TestsUnidade
             var clienteRepository = new Mock<IClienteRepository>();
             clienteRepository.Setup(x => x.BuscarPorCpfAsync(It.Is<string>(w => cpfsExistentes.Contains(w)))).ReturnsAsync((string cp) => new ClienteDTO() { Cpf = cp });
             var logger = new Mock<ILogger<ClienteService>>();
-            var clienteService = new ClienteService(logger.Object,clienteRepository.Object);
+            var clienteService = new ClienteService(logger.Object, clienteRepository.Object);
 
             // Act
             Cliente cliente = await clienteService.BuscaPorCPF(cpf);
@@ -42,8 +45,6 @@ namespace Api.Core.TestsUnidade
             cliente.NoCpfme.Should().Be(cpf);
         }
 
-
-        [Trait("Cliente", "Consulta CPF")]
         [Theory(DisplayName = "Falha ao conectar com o banco de dados. Não deve retornar cliente pelo CPF e deve logar erro")]
         [InlineData("88899977744")]
         public async void NaoDeveRetonarClienteEDeveLogarErro(string cpf)
