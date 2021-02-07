@@ -16,7 +16,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
-    [Route("api/v{version:apiVersion}/servicos/consulta/estado/")]
+    [Route("api/v{version:apiVersion}/servicos/consulta/estados/")]
     public class EstadoController : ControllerBase
     {
         private readonly ILogger<EstadoController> _logger;
@@ -53,7 +53,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{idEstado}/municipio")]
+        [HttpGet("{idEstado}/municipios")]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.OK, Type = typeof(EstadoUF))]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.NotFound)]

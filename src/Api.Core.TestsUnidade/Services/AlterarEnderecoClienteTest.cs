@@ -1,5 +1,6 @@
 ﻿using Api.Core.Contracts.Repositorys;
 using Api.Core.Contracts.Services;
+using Api.Core.Exceptions;
 using Api.Core.Models;
 using Api.Core.Services;
 using FluentAssertions;
@@ -23,7 +24,7 @@ namespace Api.Core.TestsUnidade
         }
 
         [Theory(DisplayName = "Deve alterar o endereço do cliente com sucesso")]
-        [InlineData(1, 1, "Rua 3", "456", "", "São Paulo", "SP", "Brasil", "00998-988")]
+        [InlineData(1, 1, "Rua 3", "456", "", "São Paulo", "SP", "Brasil", "00998988")]
         public async void DeveAlterarOEnderecoDoClienteComSucesso(int id, long idCliente, string logradouro, string numero, string complemento, string cidade, string estado, string pais, string cep)
         {
             // Arrange
@@ -35,11 +36,10 @@ namespace Api.Core.TestsUnidade
             EnderecoCliente enderecoCliente = new EnderecoCliente(id, idCliente, logradouro, numero, complemento, cidade, estado, pais, cep);
 
             // Act
-            var validationResult = await enderecoClienteService.AlterarEndereco(enderecoCliente);
+            var resultAlteracao = await enderecoClienteService.AlterarEndereco(enderecoCliente);
 
             // Assert
-            Assert.Empty(validationResult.Errors);
-            validationResult.IsValid.Should().Be(true);
+            resultAlteracao.Should().Be(true);
             logger._AssertLog(LogLevel.Information, $"Alterando endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}", 1);
             logger._AssertLog(LogLevel.Information, $"Endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId} alterado com sucesso", 1);
         }
@@ -58,16 +58,15 @@ namespace Api.Core.TestsUnidade
             EnderecoCliente enderecoCliente = new EnderecoCliente(id, idCliente, logradouro, numero, complemento, cidade, estado, pais, cep);
 
             // Act
-            var validateResult = await enderecoClienteService.AlterarEndereco(enderecoCliente);
+            await Assert.ThrowsAsync<DomainException>(() => enderecoClienteService.AlterarEndereco(enderecoCliente));
 
             // Assert
-            Assert.NotEmpty(validateResult.Errors);
             logger._AssertLog(LogLevel.Information, $"Alterando endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}", 0);
             logger._AssertLog(LogLevel.Information, $"Endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId} alterado com sucesso", 0);
         }
 
         [Theory(DisplayName = "Não deve alterar, falha na transação com o banco de dados")]
-        [InlineData(1, 1, "Rua 3", "456", "", "São Paulo", "SP", "Brasil", "00998-988")]
+        [InlineData(1, 1, "Rua 3", "456", "", "São Paulo", "SP", "Brasil", "00998988")]
         public async void FalhaNaTransacaoComOBanco(int id, long idCliente, string logradouro, string numero, string complemento, string cidade, string estado, string pais, string cep)
         {
             // Arrange
@@ -79,10 +78,10 @@ namespace Api.Core.TestsUnidade
             EnderecoCliente enderecoCliente = new EnderecoCliente(id, idCliente, logradouro, numero, complemento, cidade, estado, pais, cep);
 
             // Act
-            var validateResult = await enderecoClienteService.AlterarEndereco(enderecoCliente);
+            var resultAlteracao = await enderecoClienteService.AlterarEndereco(enderecoCliente);
 
             // Assert
-            Assert.NotEmpty(validateResult.Errors);
+            resultAlteracao.Should().Be(false);
             logger._AssertLog(LogLevel.Information, $"Alterando endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}", 1);
             logger._AssertLog(LogLevel.Information, $"Endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId} alterado com sucesso", 0);
             logger._AssertLog(LogLevel.Error, $"Erro ao alterar o endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}", 1);

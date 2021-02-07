@@ -17,7 +17,6 @@ DROP TABLE IF EXISTS `cliente_endereco`;
 CREATE TABLE `cliente_endereco` (
   id int,   
   cliente_id int NOT NULL,
-  nome varchar(200) DEFAULT NULL,
   logradouro varchar(150) NOT NULL,
   numero varchar(20) not null,
   complemento varchar(20),

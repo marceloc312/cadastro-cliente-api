@@ -31,7 +31,7 @@ namespace Api.TestsIntegrados
             // Arrange
 
             // Act
-            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/cliente/{idCliente}/endereco");
+            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/cliente/{idCliente}/enderecos");
             var resposta = await requisicao.Content.ReadAsStringAsync();
 
             // Assert
@@ -41,8 +41,8 @@ namespace Api.TestsIntegrados
             Assert.Equal(qtdEnderecosNoBanco, enderecos.Count());
         }
 
-        [Theory(DisplayName = "Retorna o Endereço do Cliente pelo id do Endereço na rota cliente/{idCliente}/endereco/{idEndereco}")]
-        [InlineData(1, 1, "Rua Curitiba")]
+        [Theory(DisplayName = "Retorna o Endereço do Cliente pelo id do Endereço na rota cliente/{idCliente}/enderecos/{idEndereco}")]
+        [InlineData(4, 5, "Rua Antonio Caserta")]
         [InlineData(1, 2, "Rua CearÃ¡")]
         [InlineData(2, 3, "Avenida Santo Inacio")]
         public async void RetornaEnderecoPorIdNaRotaClienteID(int idCliente, int idEndereco, string assertLogradouro)
@@ -50,7 +50,7 @@ namespace Api.TestsIntegrados
             // Arrange
 
             // Act
-            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/cliente/{idCliente}/endereco/{idEndereco}");
+            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/cliente/{idCliente}/enderecos/{idEndereco}");
             var resposta = await requisicao.Content.ReadAsStringAsync();
 
             // Assert
@@ -70,7 +70,7 @@ namespace Api.TestsIntegrados
             // Arrange
 
             // Act
-            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/cliente/{idCliente}/endereco/{idEndereco}");
+            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/cliente/{idCliente}/enderecos/{idEndereco}");
             var resposta = await requisicao.Content.ReadAsStringAsync();
 
             // Assert

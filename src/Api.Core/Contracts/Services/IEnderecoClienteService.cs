@@ -7,7 +7,7 @@ namespace Api.Core.Contracts.Services
 {
     public interface IEnderecoClienteService
     {
-        Task<ValidateResult> AlterarEndereco(EnderecoCliente enderecoCliente);
+        Task<bool> AlterarEndereco(EnderecoCliente enderecoCliente);
         Task<IEnumerable<EnderecoCliente>> BuscaEnderecosPorIdClienteAsync(long idCliente);
         Task<EnderecoCliente> BuscaEnderecoPorIdAsync(long idCliente,int idEndereco);
     }

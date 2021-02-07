@@ -1,5 +1,6 @@
 ﻿using Api.Core.Contracts.Repositorys;
 using Api.Core.Contracts.Services;
+using Api.Core.Exceptions;
 using Api.Core.Models;
 using Api.Core.Validations;
 using Microsoft.Extensions.Logging;
@@ -20,23 +21,29 @@ namespace Api.Core.Services
             _enderecoClienteRepository = enderecoClienteRepository;
         }
 
-        public async Task<ValidateResult> AlterarEndereco(EnderecoCliente enderecoCliente)
+        public async Task<bool> AlterarEndereco(EnderecoCliente enderecoCliente)
         {
-            var result = new ValidateResult();
+            bool result = false;
             try
             {
                 if (!enderecoCliente.IsValidoForUpdate())
-                    return enderecoCliente.ValidationResult;
+                    throw new DomainException(string.Join(";", enderecoCliente.ValidationResult.Errors));
 
                 _logger.LogInformation($"Alterando endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}");
                 await _enderecoClienteRepository.AlterarAsync(enderecoCliente);
                 _logger.LogInformation($"Endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId} alterado com sucesso");
+                result = true;
+            }
+            catch (DomainException ex)
+            {
+                var guid = Guid.NewGuid();
+                _logger.LogError($"ID de erro: {guid}. Erro ao alterar o endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}. { ex}");
+                throw ex;
             }
             catch (Exception ex)
             {
                 var guid = Guid.NewGuid();
                 _logger.LogError($"ID de erro: {guid}. Erro ao alterar o endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}. { ex}");
-                result.Add($"Não foi possível efitivar a transação com sucesso. ID: {guid}");
             }
             return result;
         }

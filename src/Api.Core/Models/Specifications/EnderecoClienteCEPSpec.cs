@@ -9,7 +9,7 @@ namespace Api.Core.Models.Specifications
         {
             return !string.IsNullOrEmpty(entity.CEP) 
                 && !string.IsNullOrWhiteSpace(entity.CEP)  
-                && (Regex.IsMatch(entity.CEP, @"^\d{8}$") || Regex.IsMatch(entity.CEP, @"^\d{5}-\d{3}$"));
+                && (Regex.IsMatch(entity.CEP, @"^\d{8}$"));
         }
     }
 }

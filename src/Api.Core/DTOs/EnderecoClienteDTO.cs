@@ -1,4 +1,5 @@
 ﻿using Api.Core.Models;
+using System;
 
 namespace Api.Core.DTOs
 {
@@ -40,5 +41,10 @@ namespace Api.Core.DTOs
         public string Estado { get; set; }
         public string Pais { get; set; }
         public string CEP { get; set; }
+
+        public EnderecoCliente ToEnderecoCliente(long idCliente, int idEndereco)
+        {
+            return new EnderecoCliente(idEndereco, idCliente, Logradouro, Numero, Complemento, Cidade, Estado, Pais, CEP);
+        }
     }
 }

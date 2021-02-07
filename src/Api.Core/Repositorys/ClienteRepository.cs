@@ -22,18 +22,29 @@ namespace Api.Core.Repositorys
             return result;
         }
     }
-    public class EnderecoClienteRepository: BaseRepository, IEnderecoClienteRepository
+    public class EnderecoClienteRepository : BaseRepository, IEnderecoClienteRepository
     {
         public EnderecoClienteRepository(IConnectionFactoryDatabase connectionFactory) : base(connectionFactory)
         {
         }
 
-        public Task AlterarAsync(EnderecoCliente enderecoCliente)
+        public async Task AlterarAsync(EnderecoCliente enderecoCliente)
         {
-            throw new System.NotImplementedException();
+            var conn = _connectionFactory.Connection();
+            await conn.ExecuteAsync(sql: EnderecoQuery.UPDATE_ENDERECO, param: new
+            {
+                id = enderecoCliente.Id,
+                logradouro = enderecoCliente.Logradouro,
+                numero = enderecoCliente.Numero,
+                complemento = enderecoCliente.Complemento,
+                cidade = enderecoCliente.Cidade,
+                estado = enderecoCliente.Estado,
+                pais = enderecoCliente.Pais,
+                cep = enderecoCliente.CEP
+            });
         }
 
-        public async Task<EnderecoCliente> BuscaEnderecoPorIdAsync(long idCliente,int idEndereco)
+        public async Task<EnderecoCliente> BuscaEnderecoPorIdAsync(long idCliente, int idEndereco)
         {
             var conn = _connectionFactory.Connection();
             var query = await conn.QueryAsync<EnderecoCliente>(sql: EnderecoQuery.SELECT_ENDERECOS_POR_ID, param: new { idCliente, id = idEndereco });

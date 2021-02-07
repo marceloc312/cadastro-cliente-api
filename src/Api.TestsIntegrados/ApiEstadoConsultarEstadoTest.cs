@@ -28,7 +28,7 @@ namespace Api.TestsIntegrados
             bool servicoTerceiroFuncionando = await HelperTest.PingDeVerificacaoServicoLocalizacaoEstadosMunicipios();
 
             // Act
-            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/servicos/consulta/estado");
+            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/servicos/consulta/estados");
             var resposta = await requisicao.Content.ReadAsStringAsync();
 
             // Assert
@@ -44,20 +44,6 @@ namespace Api.TestsIntegrados
             {
                 requisicao.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             }
-        }
-
-        [Fact(DisplayName = "Erro de comunicação com Api de terceiros, não deve retornar Estados/UF")]
-        public async void ErroDeComunicacaoComApiDeTerceirosNaoDeveRetornarDadosUFs()
-        {
-            // Arrange
-            // Act
-            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/servicos/consulta/estado");
-            var resposta = await requisicao.Content.ReadAsStringAsync();
-
-            // Assert
-            requisicao.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-            Assert.DoesNotContain("sigla", resposta);
         }
     }
 }

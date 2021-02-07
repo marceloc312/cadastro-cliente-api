@@ -28,7 +28,7 @@ namespace Api.TestsIntegrados
             bool servicoTerceiroFuncionando = await HelperTest.PingDeVerificacaoServicoLocalizacaoEstadosMunicipios();
 
             // Act
-            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/servicos/consulta/estado/{idEstado}/municipio");
+            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/servicos/consulta/estados/{idEstado}/municipios");
             var resposta = await requisicao.Content.ReadAsStringAsync();
 
             // Assert
@@ -38,6 +38,7 @@ namespace Api.TestsIntegrados
                 Assert.True(requisicao.IsSuccessStatusCode);
                 var municipio = JsonConvert.DeserializeObject<IEnumerable<Municipio>>(resposta);
                 municipio.Should().NotBeEmpty();
+                municipio.FirstOrDefault().Nome.Should().Be("Adamantina");
             }
             else
             {
@@ -53,23 +54,7 @@ namespace Api.TestsIntegrados
             // Arrange
 
             // Act
-            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/servicos/consulta/estado/{idEstado}/municipio");
-            var resposta = await requisicao.Content.ReadAsStringAsync();
-
-            // Assert
-            requisicao.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-            Assert.DoesNotContain("sigla", resposta);
-        }
-
-        [Theory(DisplayName = "Erro no processamento da solicitação")]
-        [InlineData(35)]
-        public async void ErroInternoDeServidor(int idEstado)
-        {
-            // Arrange
-
-            // Act
-            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/servicos/consulta/estado/{idEstado}/municipio");
+            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/servicos/consulta/estados/{idEstado}/municipios");
             var resposta = await requisicao.Content.ReadAsStringAsync();
 
             // Assert

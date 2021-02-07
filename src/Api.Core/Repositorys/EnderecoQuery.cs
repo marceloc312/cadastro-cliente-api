@@ -31,5 +31,17 @@
             FROM cliente_endereco ce 
             WHERE
                 ce.id = @id AND ce.cliente_id = @idCliente";
+        internal const string UPDATE_ENDERECO = @"
+UPDATE cad.cliente_endereco
+SET 
+    logradouro = @logradouro,
+	numero = @numero,
+	complemento = @complemento,
+	cidade = @cidade,
+	estado = @estado,
+	pais = @pais,
+	cep = @cep
+WHERE Id = @id;
+";
     }
 }

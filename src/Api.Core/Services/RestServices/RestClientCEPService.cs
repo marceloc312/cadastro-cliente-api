@@ -13,15 +13,4 @@ namespace Api.Core.Services.RestServices
         {
         }
     }
-    public class RestClientEstadoService : RestClientService, IRestClientEstadoService
-    {
-        public RestClientEstadoService(IOptions<ParametroRestConsultaEstado> parametroRest) : base(parametroRest.Value)
-        {
-        }
-
-        public Task<HttpResponseMessage> GetAsync(string valueForTemplate = null)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
 }

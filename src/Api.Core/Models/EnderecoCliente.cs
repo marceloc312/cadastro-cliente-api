@@ -10,7 +10,7 @@ namespace Api.Core.Models
         {
         }
 
-        public EnderecoCliente(int id, long idCliente, string logradouro, string numero, string complemento, string cidade,string estado, string pais, string cEP)
+        public EnderecoCliente(int id, long idCliente, string logradouro, string numero, string complemento, string cidade,string estado, string pais, string cep)
         {
             Id = id;
             ClienteId = idCliente;
@@ -20,7 +20,7 @@ namespace Api.Core.Models
             Cidade = cidade;
             Estado = estado;
             Pais = pais;
-            CEP = cEP;
+            CEP = cep;
         }
 
         public int Id { get; set; }

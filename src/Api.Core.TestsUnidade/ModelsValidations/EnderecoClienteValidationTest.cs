@@ -36,7 +36,7 @@ namespace Api.Core.TestsUnidade
         }
 
         [Theory(DisplayName = "Endereço válido")]
-        [InlineData(1, "Rua 3", "456", "", "São Paulo","SP", "Brasil", "00998-988")]
+        [InlineData(1, "Rua 3", "456", "", "São Paulo","SP", "Brasil", "00998988")]
         [InlineData(1, "Rua 3", "456", "", "São Paulo", "SP", "Brasil", "04138002")]
         public void EnderecoValido(long idCliente, string logradouro, string numero, string complemento, string cidade, string estado, string pais, string cep)
         {
