@@ -1,0 +1,14 @@
+version: "3.1"
+services:
+  api:
+    container_name: cadastro_cliente_api
+    build: ../../src
+    image: cadastro_cliente_api
+    environment:
+      - ConnectionStrings:MySql=Server=host.docker.internal; Port=3306; Database=cad; Uid=root; Pwd=senha1234;
+      - ParametroConsultaCEP:Url=https://viacep.com.br/
+      - ParametroConsultaCEP:TemplateResource=ws/{0}/json/
+      - ParametroRestConsultaEstado:Url=https://servicodados.ibge.gov.br/api/v1/localidades/estados/
+      - ParametroRestConsultaEstado:TemplateResource={0}/municipios
+    ports:
+      - "8080:80"

@@ -1,0 +1,219 @@
+{
+	"info": {
+		"_postman_id": "7ab10d92-0370-4a0b-b6b1-0519e377a45d",
+		"name": "teste-pan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Consultar Cliente por CPF",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostApiCadastroCliente}}/api/v1.0/cliente/93939714046",
+					"protocol": "http",
+					"host": [
+						"{{hostApiCadastroCliente}}"
+					],
+					"path": [
+						"api",
+						"v1.0",
+						"cliente",
+						"93939714046"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Enderecos por Cliente",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostApiCadastroCliente}}/api/v1.0/cliente/1/enderecos",
+					"protocol": "http",
+					"host": [
+						"{{hostApiCadastroCliente}}"
+					],
+					"path": [
+						"api",
+						"v1.0",
+						"cliente",
+						"1",
+						"enderecos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alterar Endereço",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"logradouro\":\"Avenida Interlagos\",\r\n        \"numero\": \"45B\",\r\n        \"complemento\": \"Casa 4\",\r\n        \"cidade\":\"Praia Grande\",\r\n        \"estado\": \"SP\",\r\n        \"pais\": \"Brasil\",\r\n        \"cep\": \"03998988\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{hostApiCadastroCliente}}/api/v1.0/cliente/1/enderecos/1",
+					"protocol": "http",
+					"host": [
+						"{{hostApiCadastroCliente}}"
+					],
+					"path": [
+						"api",
+						"v1.0",
+						"cliente",
+						"1",
+						"enderecos",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busca Endereço Por ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostApiCadastroCliente}}/api/v1.0/cliente/1/enderecos/1",
+					"protocol": "http",
+					"host": [
+						"{{hostApiCadastroCliente}}"
+					],
+					"path": [
+						"api",
+						"v1.0",
+						"cliente",
+						"1",
+						"enderecos",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostApiCadastroCliente}}/health",
+					"protocol": "http",
+					"host": [
+						"{{hostApiCadastroCliente}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar CEP",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostApiCadastroCliente}}/api/v1.0/servicos/consulta/cep/04470060",
+					"protocol": "http",
+					"host": [
+						"{{hostApiCadastroCliente}}"
+					],
+					"path": [
+						"api",
+						"v1.0",
+						"servicos",
+						"consulta",
+						"cep",
+						"04470060"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Estados",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostApiCadastroCliente}}/api/v1.0/servicos/consulta/estados/",
+					"protocol": "http",
+					"host": [
+						"{{hostApiCadastroCliente}}"
+					],
+					"path": [
+						"api",
+						"v1.0",
+						"servicos",
+						"consulta",
+						"estados",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Municipios",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostApiCadastroCliente}}/api/v1.0/servicos/consulta/estados/35/municipios",
+					"protocol": "http",
+					"host": [
+						"{{hostApiCadastroCliente}}"
+					],
+					"path": [
+						"api",
+						"v1.0",
+						"servicos",
+						"consulta",
+						"estados",
+						"35",
+						"municipios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Serviço terceiro (IBGE)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://servicodados.ibge.gov.br/api/v1/localidades/estados",
+					"protocol": "https",
+					"host": [
+						"servicodados",
+						"ibge",
+						"gov",
+						"br"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localidades",
+						"estados"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
