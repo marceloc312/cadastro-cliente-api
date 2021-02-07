@@ -1,4 +1,7 @@
-﻿namespace Api.Core.DTOs
+﻿using Api.Core.Models;
+using System;
+
+namespace Api.Core.DTOs
 {
     public class CepDTO
     {
@@ -12,6 +15,14 @@
         public string gia { get; set; }
         public string ddd { get; set; }
         public string siafi { get; set; }
+
+        internal EnderecoCep ToEnderecoCep()
+        {
+            if (!string.IsNullOrEmpty(logradouro) && !string.IsNullOrEmpty(uf) && !string.IsNullOrEmpty(localidade))
+                return new EnderecoCep(cep, logradouro, complemento, bairro, localidade, uf);
+
+            return null;
+        }
     }
 
 }

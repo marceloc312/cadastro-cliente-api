@@ -3,6 +3,7 @@ using Api.Core.Contracts.Services;
 using Api.Core.Contracts.Services.RestServices;
 using Api.Core.DTOs;
 using Api.Core.ModelConfigs;
+using Api.Core.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -25,9 +26,9 @@ namespace Api.Core.Facades
             _log = log;
         }
 
-        public async Task<CepDTO> Buscar(string cep)
+        public async Task<EnderecoCep> Buscar(string cep)
         {
-            CepDTO result = default;
+            EnderecoCep result = default;
             try
             {
                 if (!Regex.IsMatch(cep, @"^\d{8}$") && !Regex.IsMatch(cep, @"^\d{5}-\d{3}$"))
@@ -40,7 +41,8 @@ namespace Api.Core.Facades
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     _log.LogInformation("Transformando resposta em objeto CEP");
-                    result = JsonConvert.DeserializeObject<CepDTO>(mensagemDeResposta);
+                    var cepRetorno = JsonConvert.DeserializeObject<CepDTO>(mensagemDeResposta);
+                    result = cepRetorno.ToEnderecoCep();
                 }
             }
             catch (Exception ex)

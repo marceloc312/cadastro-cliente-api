@@ -38,11 +38,11 @@ namespace Api.Core.TestsUnidade
             CepFacade cepFacade = new CepFacade(restMock.Object, logger.Object);
 
             // Act
-            CepDTO cepDTO = await cepFacade.Buscar(cep);
+            EnderecoCep enderecoCep = await cepFacade.Buscar(cep);
 
             // Assert
-            Assert.NotNull(cepDTO);
-            cepDTO.logradouro.Should().Be("Praça da Sé");
+            Assert.NotNull(enderecoCep);
+            enderecoCep.Logradouro.Should().Be("Praça da Sé");
         }
 
         [Theory(DisplayName = "CEP inválido. Não deve retornar o CEP")]
@@ -56,10 +56,10 @@ namespace Api.Core.TestsUnidade
             CepFacade cepFacade = new CepFacade(restMock.Object, logger.Object);
 
             // Act
-            CepDTO cepDTO = await cepFacade.Buscar(cep);
+            EnderecoCep enderecoCep = await cepFacade.Buscar(cep);
 
             // Assert
-            Assert.Null(cepDTO);
+            Assert.Null(enderecoCep);
             logger._AssertLog(LogLevel.Information, "Enviando requisição GET", 0);
             logger._AssertLog(LogLevel.Error, "inválido", 1);
         }
@@ -75,10 +75,10 @@ namespace Api.Core.TestsUnidade
             CepFacade cepFacade = new CepFacade(restMock.Object, logger.Object);
 
             // Act
-            CepDTO cepDTO = await cepFacade.Buscar(cep);
+            EnderecoCep enderecoCep = await cepFacade.Buscar(cep);
 
             // Assert
-            Assert.Null(cepDTO);
+            Assert.Null(enderecoCep);
             logger._AssertLog(LogLevel.Information, "Enviando requisição GET", 1);
             logger._AssertLog(LogLevel.Information, "Consulta executada com StatusCode", 1);
         }
@@ -94,10 +94,10 @@ namespace Api.Core.TestsUnidade
             CepFacade cepFacade = new CepFacade(restMock.Object, logger.Object);
 
             // Act
-            CepDTO cepDTO = await cepFacade.Buscar(cep);
+            EnderecoCep enderecoCep = await cepFacade.Buscar(cep);
 
             // Assert
-            Assert.Null(cepDTO);
+            Assert.Null(enderecoCep);
             logger._AssertLog(LogLevel.Information, "Enviando requisição GET", 1);
             logger._AssertLog(LogLevel.Information, "Consulta executada com StatusCode", 0);
             logger._AssertLog(LogLevel.Error, "Erro ao consultar o CEP", 1);

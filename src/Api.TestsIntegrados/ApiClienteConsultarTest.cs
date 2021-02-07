@@ -10,14 +10,14 @@ namespace Api.TestsIntegrados
 {
     [Trait("[Testes Integrados] Api Cliente", "Consulta cliente")]
     [Collection(nameof(IntegrationApiTestFixtureCollection))]
-    public class ControllerClienteConsultarTest
+    public class ApiClienteConsultarTest
     {
         private const string CPF_MARCELO = "93939714046";
         private const string CPF_TEREZA = "58939041097";
         private const string CPF_RENATA = "89781767049";
 
         private readonly IntegrationTestFixture<Startup> _integrationTestFixture;
-        public ControllerClienteConsultarTest(IntegrationTestFixture<Startup> integrationTestFixture)
+        public ApiClienteConsultarTest(IntegrationTestFixture<Startup> integrationTestFixture)
         {
             _integrationTestFixture = integrationTestFixture;
         }
@@ -87,4 +87,4 @@ namespace Api.TestsIntegrados
             requisicao.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
     }
-}
+    }

@@ -1,8 +1,13 @@
 using Api.Configurations;
+using Api.Core.Contracts.Facades;
 using Api.Core.Contracts.Repositorys;
 using Api.Core.Contracts.Services;
+using Api.Core.Contracts.Services.RestServices;
+using Api.Core.Facades;
+using Api.Core.ModelConfigs;
 using Api.Core.Repositorys;
 using Api.Core.Services;
+using Api.Core.Services.RestServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,6 +41,10 @@ namespace Api
             services.AddControllers();
 
             services.AddTransient<IClienteService, ClienteService>();
+
+            services.Configure<ParametroConsultaCEP>(Configuration.GetSection("ParametroConsultaCEP"));
+            services.AddTransient<IRestClientCEPService, RestClientCEPService>();
+            services.AddTransient<ICepFacade, CepFacade>();
             
             services.AddScoped<IClienteRepository, ClienteRepository>();
 

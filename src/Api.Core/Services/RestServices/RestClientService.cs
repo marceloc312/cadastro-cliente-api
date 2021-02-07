@@ -9,22 +9,24 @@ namespace Api.Core.Services.RestServices
 {
     public abstract class RestClientService : IRestClientService
     {
-        readonly ACLRestConfig _aCLRestConfig;
+        readonly string _url;
+        readonly string _templateResource;
 
-        public RestClientService(ACLRestConfig aCLRestConfig)
+        protected RestClientService(string url, string templateResource)
         {
-            _aCLRestConfig = aCLRestConfig;
+            _url = url;
+            _templateResource = templateResource;
         }
 
         public async Task<HttpResponseMessage> GetAsync(string valueForTemplate = null)
         {
             HttpClient httpClient = new HttpClient()
             {
-                BaseAddress = new Uri(_aCLRestConfig.Url),
+                BaseAddress = new Uri(_url),
             };
             string requestUri = string.Empty;
             if (!string.IsNullOrEmpty(valueForTemplate))
-                requestUri = string.Format(_aCLRestConfig.TemplateResource, valueForTemplate);
+                requestUri = string.Format(_templateResource, valueForTemplate);
 
             return await httpClient.GetAsync(requestUri);
         }

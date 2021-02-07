@@ -1,4 +1,5 @@
 ﻿using Api.Core.DTOs;
+using Api.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Api.Core.Contracts.Facades
 {
     public interface ICepFacade
     {
-        Task<CepDTO> Buscar(string cep);
+        Task<EnderecoCep> Buscar(string cep);
     }
 }
