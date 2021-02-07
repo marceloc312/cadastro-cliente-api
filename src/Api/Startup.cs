@@ -42,9 +42,14 @@ namespace Api
 
             services.AddTransient<IClienteService, ClienteService>();
 
-            services.Configure<ParametroConsultaCEP>(Configuration.GetSection("ParametroConsultaCEP"));
+            services.Configure<ParametroRestConsultaCEP>(Configuration.GetSection("ParametroConsultaCEP"));
+            services.Configure<ParametroRestConsultaEstado>(Configuration.GetSection("ParametroRestConsultaEstado"));
+            services.Configure<OrdenacaoEstados>(Configuration.GetSection("OrdenacaoEstados"));
+            
             services.AddTransient<IRestClientCEPService, RestClientCEPService>();
+            services.AddTransient<IRestClientEstadoService, RestClientEstadoService>();
             services.AddTransient<ICepFacade, CepFacade>();
+            services.AddTransient<IEstadoFacade, EstadoFacade>();
             
             services.AddScoped<IClienteRepository, ClienteRepository>();
 
@@ -57,17 +62,19 @@ namespace Api
             services.AddApiVersioning();
             services.AddSwaggerGen(options =>
             {
-                options.DocInclusionPredicate((docName, apiDesc) =>
-                {
-                    if (!apiDesc.TryGetMethodInfo(out MethodInfo methodInfo)) return false;
+            //    options.DocInclusionPredicate((docName, apiDesc) =>
+            //    {
+            //        if (!apiDesc.TryGetMethodInfo(out MethodInfo methodInfo)) return false;
 
-                    var versions = methodInfo.DeclaringType
-                        .GetCustomAttributes(true)
-                        .OfType<ApiVersionAttribute>()
-                        .SelectMany(attr => attr.Versions);
+            //        var versions = methodInfo.DeclaringType
+            //            .GetCustomAttributes(true)
+            //            .OfType<ApiVersionAttribute>()
+            //            .SelectMany(attr => attr.Versions);
 
-                    return versions.Any(v => $"v{v.ToString()}" == docName);
-                });
+            //        return versions.Any(v => $"v{v.ToString()}" == docName);
+            //    });
+
+            //    options.DocumentFilter<TagDescriptionsDocumentFilter>();
                 options.OperationFilter<AddInfoToParamVersionOperationFilter>();
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Api Cliente", Description = "Documentação Api Cadastro Básico Cliente", Version = "1.0" });
             });
@@ -97,6 +104,17 @@ namespace Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
             });
+        }
+    }
+
+    public class TagDescriptionsDocumentFilter : IDocumentFilter
+    {
+        public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
+        {
+            swaggerDoc.Tags = new[] {
+            new OpenApiTag { Name = "Livros", Description = "Consulta e mantém os livros." },
+            new OpenApiTag { Name = "Listas", Description = "Consulta as listas de leitura." }
+        };
         }
     }
 }

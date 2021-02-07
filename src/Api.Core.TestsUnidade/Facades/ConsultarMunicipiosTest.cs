@@ -2,8 +2,10 @@
 using Api.Core.DTOs;
 using Api.Core.DTOs.ACL;
 using Api.Core.Facades;
+using Api.Core.ModelConfigs;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -14,9 +16,10 @@ using Xunit;
 namespace Api.Core.TestsUnidade
 {
         [Trait("[Testes Unitários] Estados Facade", "Consulta Municipios por Estado")]
-    public partial class ConsultarMuniciosTest
+    public partial class ConsultarMunicipiosTest
     {
-        public ConsultarMuniciosTest()
+           readonly IOptions<OrdenacaoEstados> optionsOrdenacao = Options.Create<OrdenacaoEstados>(new OrdenacaoEstados() { Rank = new[] { "SP", "RJ" }, Sentido = "Asc" });
+        public ConsultarMunicipiosTest()
         {
         }
 
@@ -26,8 +29,8 @@ namespace Api.Core.TestsUnidade
         {
             // Arrange
             var restMock = TestHelperFactory.CreateRestEstadosServiceMock(HttpStatusCode.OK, MockJsonValues.MunicipiosSP());
-            var logger = new Mock<ILogger<EstadosFacade>>();
-            IEstadosFacade estadoFacade = new EstadosFacade(logger.Object, restMock.Object);
+            var logger = new Mock<ILogger<EstadoFacade>>();
+            IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao,restMock.Object);
 
             // Act
             IEnumerable<MunicipioDTO> municipios = await estadoFacade.ListarMunicipiosPorEstado(idEstado);
@@ -48,8 +51,8 @@ namespace Api.Core.TestsUnidade
         {
             // Arrange
             var restMock = TestHelperFactory.CreateRestEstadosServiceMock(HttpStatusCode.BadRequest, "Erro ao retornar municipios");
-            var logger = new Mock<ILogger<EstadosFacade>>();
-            IEstadosFacade estadoFacade = new EstadosFacade(logger.Object, restMock.Object);
+            var logger = new Mock<ILogger<EstadoFacade>>();
+            IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao, restMock.Object);
 
             // Act
             IEnumerable<MunicipioDTO> estados = await estadoFacade.ListarMunicipiosPorEstado(idEstado);
@@ -65,8 +68,8 @@ namespace Api.Core.TestsUnidade
         {
             // Arrange
             var restMock = TestHelperFactory.CreateRestEstadosServiceMock(HttpStatusCode.BadRequest, "Erro ao retornar estados", new Exception("Time out"));
-            var logger = new Mock<ILogger<EstadosFacade>>();
-            IEstadosFacade estadoFacade = new EstadosFacade(logger.Object, restMock.Object);
+            var logger = new Mock<ILogger<EstadoFacade>>();
+            IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao, restMock.Object);
 
             // Act
             IEnumerable<MunicipioDTO> estados = await estadoFacade.ListarMunicipiosPorEstado(35);

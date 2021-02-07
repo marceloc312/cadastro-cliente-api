@@ -1,13 +1,8 @@
 ﻿using Api.Core.Contracts.Repositorys;
-using Api.Core.DTOs;
 using Api.Core.Models;
 using Dapper;
-using System;
-using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Api.Core.Repositorys
 {
@@ -28,14 +23,6 @@ namespace Api.Core.Repositorys
     }
     internal static class ClienteQuery
     {
-        public const string SELECT_CLIENTE_POR_CPF = @"                
-                SELECT
-	                c.id IdCliente,
-	                c.nome Nome,
-	                c.cpf CPF
-                FROM
-	                cliente c
-                WHERE
-	                c.cpf =  @cpf";
+        public const string SELECT_CLIENTE_POR_CPF = @"SELECT c.id Id, c.nome Nome, c.cpf CPF FROM cliente c WHERE c.cpf =  @cpf";
     }
 }

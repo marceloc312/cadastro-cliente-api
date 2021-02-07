@@ -11,14 +11,14 @@ namespace Api.TestsIntegrados
 {
     [Trait("[Testes Integrados] Api Localização", "Consulta CEP")]
     [Collection(nameof(IntegrationApiTestFixtureCollection))]
-    public class ApiConsultarCepTest
+    public class ApiCepTest
     {
         private const string CEP_1 = "01001-000";
         private const string CEP_2 = "04138001";
         private const string CEP_3 = "04470-060";
 
         private readonly IntegrationTestFixture<Startup> _integrationTestFixture;
-        public ApiConsultarCepTest(IntegrationTestFixture<Startup> integrationTestFixture)
+        public ApiCepTest(IntegrationTestFixture<Startup> integrationTestFixture)
         {
             _integrationTestFixture = integrationTestFixture;
         }

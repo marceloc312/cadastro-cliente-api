@@ -35,7 +35,7 @@ namespace Api.Core.TestsUnidade
         private static string GetTextFromFileFile(string fileName)
         {
             string dirAtual = Environment.CurrentDirectory;
-            string fileFullName = Path.Combine(dirAtual.Substring(0, dirAtual.IndexOf(@"src\")), "src", typeof(ConsultarMuniciosTest).Assembly.GetName().Name, "Arquivos", fileName);
+            string fileFullName = Path.Combine(dirAtual.Substring(0, dirAtual.IndexOf(@"src\")), "src", typeof(ConsultarMunicipiosTest).Assembly.GetName().Name, "Arquivos", fileName);
             Encoding isoLatin1 = Encoding.GetEncoding(28591);
 
             string result = File.ReadAllText(fileFullName, isoLatin1);

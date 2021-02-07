@@ -2,8 +2,11 @@
 using Api.Core.DTOs;
 using Api.Core.DTOs.ACL;
 using Api.Core.Facades;
+using Api.Core.ModelConfigs;
+using Api.Core.Models;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -16,6 +19,7 @@ namespace Api.Core.TestsUnidade
         [Trait("[Testes Unitários] Estados Facade", "Consulta Lista de Estados")]
     public partial class ConsultarEstadosTest
     {
+           readonly IOptions<OrdenacaoEstados> optionsOrdenacao = Options.Create<OrdenacaoEstados>(new OrdenacaoEstados() { Rank = new[] { "SP", "RJ" }, Sentido = "Asc" });
         public ConsultarEstadosTest()
         {
         }
@@ -25,16 +29,16 @@ namespace Api.Core.TestsUnidade
         {
             // Arrange
             var restMock = TestHelperFactory.CreateRestEstadosServiceMock(HttpStatusCode.OK, MockJsonValues.Ufs());
-            var logger = new Mock<ILogger<EstadosFacade>>();
-            IEstadosFacade estadoFacade = new EstadosFacade(logger.Object,restMock.Object);
+            var logger = new Mock<ILogger<EstadoFacade>>();
+            IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao,restMock.Object);
 
             // Act
-            IEnumerable<UFDTO> estados= await estadoFacade.ListarUFs();
+            IEnumerable<EstadoUF> estados= await estadoFacade.ListarUFs();
 
             // Assert
             Assert.Equal(27,estados.Count());
-            estados.ElementAt(0).sigla.Should().Be("SP");
-            estados.ElementAt(1).sigla.Should().Be("RJ");
+            estados.ElementAt(0).Sigla.Should().Be("SP");
+            estados.ElementAt(1).Sigla.Should().Be("RJ");
         }
 
         [Fact(DisplayName = "Resposta incorreta da Api de estados de terceiros. Não deve retornar lista de estados e deve logar")]
@@ -42,11 +46,11 @@ namespace Api.Core.TestsUnidade
         {
             // Arrange
             var restMock = TestHelperFactory.CreateRestEstadosServiceMock(HttpStatusCode.BadRequest, "Erro ao retornar estados");
-            var logger = new Mock<ILogger<EstadosFacade>>();
-            IEstadosFacade estadoFacade = new EstadosFacade(logger.Object, restMock.Object);
+            var logger = new Mock<ILogger<EstadoFacade>>();
+            IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao, restMock.Object);
 
             // Act
-            IEnumerable<UFDTO> estados = await estadoFacade.ListarUFs();
+            IEnumerable<EstadoUF> estados = await estadoFacade.ListarUFs();
 
             // Assert
             Assert.Empty(estados);
@@ -59,11 +63,11 @@ namespace Api.Core.TestsUnidade
         {
             // Arrange
             var restMock = TestHelperFactory.CreateRestEstadosServiceMock(HttpStatusCode.BadRequest, "Erro ao retornar estados",new Exception("Time out"));
-            var logger = new Mock<ILogger<EstadosFacade>>();
-            IEstadosFacade estadoFacade = new EstadosFacade(logger.Object, restMock.Object);
+            var logger = new Mock<ILogger<EstadoFacade>>();
+            IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao, restMock.Object);
 
             // Act
-            IEnumerable<UFDTO> estados = await estadoFacade.ListarUFs();
+            IEnumerable<EstadoUF> estados = await estadoFacade.ListarUFs();
 
             // Assert
             Assert.Empty(estados);

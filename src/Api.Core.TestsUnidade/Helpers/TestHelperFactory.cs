@@ -56,10 +56,10 @@ namespace Api.Core.TestsUnidade
             return restClientCEPService;
         }
 
-        public static Mock<IRestClientEstadosService> CreateRestEstadosServiceMock(HttpStatusCode statusCode, string content, Exception exception = null)
+        public static Mock<IRestClientEstadoService> CreateRestEstadosServiceMock(HttpStatusCode statusCode, string content, Exception exception = null)
         {
 
-            var restClientCEPService = new Mock<IRestClientEstadosService>();
+            var restClientCEPService = new Mock<IRestClientEstadoService>();
 
             if (exception == null)
                 restClientCEPService.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(TestHelperFactory.CreateHttpClientHttpResponseMessageFake(statusCode, content));

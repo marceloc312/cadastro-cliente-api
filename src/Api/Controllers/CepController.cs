@@ -4,12 +4,15 @@ using Api.Core.Models;
 using Api.Core.Models.Specifications;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using NSwag.Annotations;
 using System;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
+    [Produces("application/json")]
     [ApiController]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -30,6 +33,7 @@ namespace Api.Controllers
         [ProducesResponseType(statusCode: (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.InternalServerError)]
+        [OpenApiOperation(summary:"Cep","Retorna um Endereço pelo CEP informado")]
         public async Task<IActionResult> Get(string cep)
         {
             try

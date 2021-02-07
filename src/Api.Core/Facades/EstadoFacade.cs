@@ -2,7 +2,10 @@
 using Api.Core.Contracts.Services.RestServices;
 using Api.Core.DTOs;
 using Api.Core.DTOs.ACL;
+using Api.Core.ModelConfigs;
+using Api.Core.Models;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,20 +15,22 @@ using System.Threading.Tasks;
 
 namespace Api.Core.Facades
 {
-    public class EstadosFacade : IEstadosFacade
+    public class EstadoFacade : IEstadoFacade
     {
-        readonly ILogger<EstadosFacade> _logger;
-        readonly IRestClientEstadosService _restClientEstadosService;
+        readonly ILogger<EstadoFacade> _logger;
+        readonly IRestClientEstadoService _restClientEstadosService;
+        readonly OrdenacaoEstados _ordenacaoEstados;
 
-        public EstadosFacade(ILogger<EstadosFacade> logger, IRestClientEstadosService restClientEstadosService)
+        public EstadoFacade(ILogger<EstadoFacade> logger, IOptions<OrdenacaoEstados> ordenacaoEstados, IRestClientEstadoService restClientEstadosService)
         {
             _logger = logger;
+            _ordenacaoEstados = ordenacaoEstados.Value;
             _restClientEstadosService = restClientEstadosService;
         }
 
-        public async Task<IEnumerable<UFDTO>> ListarUFs()
+        public async Task<IEnumerable<EstadoUF>> ListarUFs()
         {
-            IEnumerable<UFDTO> result = new List<UFDTO>();
+            IEnumerable<EstadoUF> result = new List<EstadoUF>();
             try
             {
                 _logger.LogInformation($"Enviando requisição GET dos Estados.");
@@ -35,8 +40,8 @@ namespace Api.Core.Facades
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     _logger.LogInformation($"Transformando resposta em objeto {nameof(UFDTO)}");
-                    var ufs = JsonConvert.DeserializeObject<IEnumerable<UFDTO>>(mensagemDeResposta);
-
+                    var ufsDTO = JsonConvert.DeserializeObject<IEnumerable<UFDTO>>(mensagemDeResposta);
+                    var ufs = ufsDTO.Select(s => new EstadoUF(s.id, s.sigla, s.nome));
                     result = Ordenar(ufs);
                 }
             }
@@ -48,15 +53,14 @@ namespace Api.Core.Facades
             return result;
         }
 
-        private static IEnumerable<UFDTO> Ordenar(IEnumerable<UFDTO> ufs)
+        private IEnumerable<EstadoUF> Ordenar(IEnumerable<EstadoUF> ufs)
         {
-            string[] ufsRank = new[] { "SP", "RJ", "SE", "SC" };
 
-            var ufsOrdenados = ufs.OrderBy(x => x.sigla).ToList();
-            foreach (var ufRank in ufsRank.Reverse())
+            var ufsOrdenados = (_ordenacaoEstados.Sentido == "Asc" ? ufs.OrderBy(x => x.Sigla) : ufs.OrderByDescending(x => x.Sigla)).ToList();
+            foreach (var ufRank in _ordenacaoEstados.Rank.Reverse())
             {
-                var uf = ufsOrdenados.FirstOrDefault(x => x.sigla == ufRank);
-                int indexUf = ufsOrdenados.FindIndex(x => x.sigla == ufRank);
+                var uf = ufsOrdenados.FirstOrDefault(x => x.Sigla == ufRank);
+                int indexUf = ufsOrdenados.FindIndex(x => x.Sigla == ufRank);
                 ufsOrdenados.RemoveAt(indexUf);
                 ufsOrdenados.Insert(0, uf);
             }

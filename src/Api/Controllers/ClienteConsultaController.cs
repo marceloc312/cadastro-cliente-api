@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
+    [Produces("application/json")]
     [ApiController]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -37,6 +38,7 @@ namespace Api.Controllers
             try
             {
                 _logger.LogInformation($"Consulta realizada para o cpf {cpf}");
+
                 if (!new ClienteCpfValidoSpec().IsSatisfiedBy(new Cliente() { CPF = cpf }))
                     return BadRequest($"Cpf {cpf} informado é invalido para consulta");
 

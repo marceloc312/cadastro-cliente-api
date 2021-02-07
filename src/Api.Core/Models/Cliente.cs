@@ -7,9 +7,8 @@ using System.Text;
 
 namespace Api.Core.Models
 {
-    public class Cliente : ISelfValidation
+    public class Cliente 
     {
-        readonly ClienteIsValidValidation _validation = new ClienteIsValidValidation();
         public Cliente()
         {
         }
@@ -19,16 +18,8 @@ namespace Api.Core.Models
             Nome = nome;
             CPF = cpf;
         }
-        public long IdCliente { get; set; }
+        public long Id { get; set; }
         public string Nome { get; set; }
         public string CPF { get; set; }
-
-        public ValidateResult ValidationResult { get; private set; }
-
-        public bool IsValid()
-        {
-           ValidationResult = _validation.Valid(this);
-            return ValidationResult.IsValid;
-        }
     }
 }
