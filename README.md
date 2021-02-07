@@ -38,7 +38,7 @@ Toda a aplicação pode ser testada pelo usuário sem a necessidade de depuraç�
 
 Utilize a ferramente de linha de comando que preferir.
 1. Clone o repositório em uma pasta vazia com o seguinte comando: git clone git@github.com:marceloc312/cadastro-cliente-api.git
-2. Na ferramente de linha de comando, navegue até a pasta do repositório e vá até a pasta ambiente. Exemplo: *cd .\teste-pan\ambiente\*
+2. Na ferramente de linha de comando, navegue até a pasta do repositório e vá até a pasta ambiente. Exemplo: *cd .\teste-pan\ambiente\
 3. Digite o comando *make init*. Esse comando faz o build da imagem docker da Api, cria a infraestrutura de banco de dados, popula as tabelas com os dados necessários para os testes e sobe os containers.
 
 Prontinho! Basta testar a aplicação.
