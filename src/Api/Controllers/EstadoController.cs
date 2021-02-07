@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using NSwag.Annotations;
+using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
-    [Route("api/v{version:apiVersion}/servicos/consulta/estado")]
+    [Route("api/v{version:apiVersion}/servicos/consulta/estado/")]
     public class EstadoController : ControllerBase
     {
         private readonly ILogger<EstadoController> _logger;
@@ -32,28 +33,52 @@ namespace Api.Controllers
         [ProducesResponseType(statusCode: (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.InternalServerError)]
-        [OpenApiOperation(summary: "Estados", "Retorna um Endereço pelo CEP informado")]
+        [OpenApiOperation(summary: "Estados", "Retorna todos os Estados/UF")]
         public async Task<IActionResult> Get()
         {
-            var result = await _estadoFacade.ListarUFs();
-            if (!result.Any())
-                return BadRequest("Ocorreu um erro no processamento da solicitação");
-            return Ok(result);
-            //try
-            //{
-            //    _logger.LogInformation($"Consulta realizada para o cep {cep}");
-            //    var endereco = await _cepFacade.Buscar(cep);
+            try
+            {
+                _logger.LogInformation($"Buscando lista de Estados");
 
-            //    if (endereco == null)
-            //        return NotFound();
+                var result = await _estadoFacade.ListarEstadosAsync();
+                if (!result.Any())
+                    return BadRequest("Ocorreu um erro no processamento da solicitação");
 
-            //    return Ok(endereco);
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError($"Consulta ao Cpf: {cep} falhou com o seguinte erro: {ex}");
-            //    return StatusCode((int)HttpStatusCode.InternalServerError, "Ocorreu um erro ao processar a solicitação");
-            //}
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Consulta aos Estados falhou com o seguinte erro: {ex}");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Ocorreu um erro ao processar a solicitação");
+            }
+        }
+
+        [HttpGet("{idEstado}/municipio")]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK, Type = typeof(EstadoUF))]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.InternalServerError)]
+        [OpenApiOperation(summary: "Estados", "Retorna os dados de um Município pelo Estado")]
+        public async Task<IActionResult> Get(int idEstado)
+        {
+            try
+            {
+                if (idEstado < 1)
+                    return BadRequest("Dados informados inválidos");
+
+                _logger.LogInformation($"Buscando lista de Estados");
+
+                var result = await _estadoFacade.ListarMunicipiosPorEstadoAsync(idEstado);
+                if (!result.Any())
+                    return BadRequest("Ocorreu um erro no processamento da solicitação");
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Consulta aos Estados falhou com o seguinte erro: {ex}");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Ocorreu um erro ao processar a solicitação");
+            }
         }
     }
 }

@@ -40,8 +40,8 @@ namespace Api.Core.TestsUnidade
             // Assert
             Assert.Empty(validationResult.Errors);
             validationResult.IsValid.Should().Be(true);
-            logger._AssertLog(LogLevel.Information, $"Alterando endereço {enderecoCliente.IdEndereco} do cliente {enderecoCliente.ClienteId}", 1);
-            logger._AssertLog(LogLevel.Information, $"Endereço {enderecoCliente.IdEndereco} do cliente {enderecoCliente.ClienteId} alterado com sucesso", 1);
+            logger._AssertLog(LogLevel.Information, $"Alterando endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}", 1);
+            logger._AssertLog(LogLevel.Information, $"Endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId} alterado com sucesso", 1);
         }
 
         [Theory(DisplayName = "Não deve alterar, dados informados inválidos")]
@@ -62,8 +62,8 @@ namespace Api.Core.TestsUnidade
 
             // Assert
             Assert.NotEmpty(validateResult.Errors);
-            logger._AssertLog(LogLevel.Information, $"Alterando endereço {enderecoCliente.IdEndereco} do cliente {enderecoCliente.ClienteId}", 0);
-            logger._AssertLog(LogLevel.Information, $"Endereço {enderecoCliente.IdEndereco} do cliente {enderecoCliente.ClienteId} alterado com sucesso", 0);
+            logger._AssertLog(LogLevel.Information, $"Alterando endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}", 0);
+            logger._AssertLog(LogLevel.Information, $"Endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId} alterado com sucesso", 0);
         }
 
         [Theory(DisplayName = "Não deve alterar, falha na transação com o banco de dados")]
@@ -83,9 +83,9 @@ namespace Api.Core.TestsUnidade
 
             // Assert
             Assert.NotEmpty(validateResult.Errors);
-            logger._AssertLog(LogLevel.Information, $"Alterando endereço {enderecoCliente.IdEndereco} do cliente {enderecoCliente.ClienteId}", 1);
-            logger._AssertLog(LogLevel.Information, $"Endereço {enderecoCliente.IdEndereco} do cliente {enderecoCliente.ClienteId} alterado com sucesso", 0);
-            logger._AssertLog(LogLevel.Error, $"Erro ao alterar o endereço {enderecoCliente.IdEndereco} do cliente {enderecoCliente.ClienteId}", 1);
+            logger._AssertLog(LogLevel.Information, $"Alterando endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}", 1);
+            logger._AssertLog(LogLevel.Information, $"Endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId} alterado com sucesso", 0);
+            logger._AssertLog(LogLevel.Error, $"Erro ao alterar o endereço {enderecoCliente.Id} do cliente {enderecoCliente.ClienteId}", 1);
             logger._AssertLog(LogLevel.Error, "Exceção de banco de dados", 1);
         }
     }

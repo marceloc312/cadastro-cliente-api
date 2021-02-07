@@ -21,20 +21,29 @@ namespace Api.TestsIntegrados
             _integrationTestFixture = integrationTestFixture;
         }
 
-        [Fact(DisplayName = "Retorna todos os Estados/UF")]
+        [Fact(DisplayName = "Retorna todos os Estados/UF se o serviço de localização de estados e municipios estiver funcionando, se não estiver, BadRequest")]
         public async void ConsultarUfs()
         {
             // Arrange
+            bool servicoTerceiroFuncionando = await HelperTest.PingDeVerificacaoServicoLocalizacaoEstadosMunicipios();
+
             // Act
             var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/servicos/consulta/estado");
             var resposta = await requisicao.Content.ReadAsStringAsync();
 
             // Assert
-            requisicao.StatusCode.Should().Be(HttpStatusCode.BadGateway);
-            Assert.True(requisicao.IsSuccessStatusCode);
-            var ufs = JsonConvert.DeserializeObject<IEnumerable<EstadoUF>>(resposta);
-            ufs.Should().NotBeEmpty();
-            Assert.Equal(27, ufs.Count());
+            if (servicoTerceiroFuncionando)
+            {
+                requisicao.StatusCode.Should().Be(HttpStatusCode.OK);
+                Assert.True(requisicao.IsSuccessStatusCode);
+                var ufs = JsonConvert.DeserializeObject<IEnumerable<EstadoUF>>(resposta);
+                ufs.Should().NotBeEmpty();
+                Assert.Equal(27, ufs.Count());
+            }
+            else
+            {
+                requisicao.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            }
         }
 
         [Fact(DisplayName = "Erro de comunicação com Api de terceiros, não deve retornar Estados/UF")]

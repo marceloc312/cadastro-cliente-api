@@ -28,7 +28,7 @@ namespace Api.Core.Facades
             _restClientEstadosService = restClientEstadosService;
         }
 
-        public async Task<IEnumerable<EstadoUF>> ListarUFs()
+        public async Task<IEnumerable<EstadoUF>> ListarEstadosAsync()
         {
             IEnumerable<EstadoUF> result = new List<EstadoUF>();
             try
@@ -68,9 +68,9 @@ namespace Api.Core.Facades
             return ufsOrdenados;
         }
 
-        public async Task<IEnumerable<MunicipioDTO>> ListarMunicipiosPorEstado(int idEstado)
+        public async Task<IEnumerable<Municipio>> ListarMunicipiosPorEstadoAsync(int idEstado)
         {
-            IEnumerable<MunicipioDTO> result = new List<MunicipioDTO>();
+            IEnumerable<Municipio> result = new List<Municipio>();
             try
             {
                 _logger.LogInformation($"Enviando requisição GET dos Municípios do Estado {idEstado}.");
@@ -80,7 +80,8 @@ namespace Api.Core.Facades
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     _logger.LogInformation($"Transformando resposta em objeto {nameof(MunicipioDTO)}");
-                    result = JsonConvert.DeserializeObject<IEnumerable<MunicipioDTO>>(mensagemDeResposta);
+                    var municipiosDTO = JsonConvert.DeserializeObject<IEnumerable<MunicipioDTO>>(mensagemDeResposta);
+                    result = municipiosDTO.Select(dto => new Municipio(dto.id, dto.nome));
                 }
             }
             catch (Exception ex)

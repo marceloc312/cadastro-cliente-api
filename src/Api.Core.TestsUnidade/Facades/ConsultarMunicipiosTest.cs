@@ -3,6 +3,7 @@ using Api.Core.DTOs;
 using Api.Core.DTOs.ACL;
 using Api.Core.Facades;
 using Api.Core.ModelConfigs;
+using Api.Core.Models;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -15,10 +16,10 @@ using Xunit;
 
 namespace Api.Core.TestsUnidade
 {
-        [Trait("[Testes Unitários] Estados Facade", "Consulta Municipios por Estado")]
+    [Trait("[Testes Unitários] Estados Facade", "Consulta Municipios por Estado")]
     public partial class ConsultarMunicipiosTest
     {
-           readonly IOptions<OrdenacaoEstados> optionsOrdenacao = Options.Create<OrdenacaoEstados>(new OrdenacaoEstados() { Rank = new[] { "SP", "RJ" }, Sentido = "Asc" });
+        readonly IOptions<OrdenacaoEstados> optionsOrdenacao = Options.Create<OrdenacaoEstados>(new OrdenacaoEstados() { Rank = new[] { "SP", "RJ" }, Sentido = "Asc" });
         public ConsultarMunicipiosTest()
         {
         }
@@ -30,18 +31,15 @@ namespace Api.Core.TestsUnidade
             // Arrange
             var restMock = TestHelperFactory.CreateRestEstadosServiceMock(HttpStatusCode.OK, MockJsonValues.MunicipiosSP());
             var logger = new Mock<ILogger<EstadoFacade>>();
-            IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao,restMock.Object);
+            IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao, restMock.Object);
 
             // Act
-            IEnumerable<MunicipioDTO> municipios = await estadoFacade.ListarMunicipiosPorEstado(idEstado);
+            IEnumerable<Municipio> municipios = await estadoFacade.ListarMunicipiosPorEstadoAsync(idEstado);
 
             // Assert
             Assert.True(municipios.Any());
-            municipios.FirstOrDefault().nome.Should().Be("Adamantina");
-            municipios.FirstOrDefault().microrregiao.id.Should().Be(35035);
-            municipios.FirstOrDefault().microrregiao.mesorregiao.nome.Should().Be("Presidente Prudente");
-            municipios.FirstOrDefault().microrregiao.mesorregiao.UF.sigla.Should().Be("SP");
-            municipios.FirstOrDefault().microrregiao.mesorregiao.UF.regiao.sigla.Should().Be("SE");
+            municipios.FirstOrDefault().Nome.Should().Be("Adamantina");
+            municipios.FirstOrDefault().Id.Should().Be(3500105);
         }
 
         [Theory(DisplayName = "Resposta incorreta da Api de municipios de terceiros. Não deve retornar lista de municipios e deve logar")]
@@ -55,7 +53,7 @@ namespace Api.Core.TestsUnidade
             IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao, restMock.Object);
 
             // Act
-            IEnumerable<MunicipioDTO> estados = await estadoFacade.ListarMunicipiosPorEstado(idEstado);
+            IEnumerable<Municipio> estados = await estadoFacade.ListarMunicipiosPorEstadoAsync(idEstado);
 
             // Assert
             Assert.Empty(estados);
@@ -72,7 +70,7 @@ namespace Api.Core.TestsUnidade
             IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao, restMock.Object);
 
             // Act
-            IEnumerable<MunicipioDTO> estados = await estadoFacade.ListarMunicipiosPorEstado(35);
+            IEnumerable<Municipio> estados = await estadoFacade.ListarMunicipiosPorEstadoAsync(35);
 
             // Assert
             Assert.Empty(estados);

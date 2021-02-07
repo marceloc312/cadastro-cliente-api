@@ -12,7 +12,7 @@ namespace Api.Core.Models
 
         public EnderecoCliente(int id, long idCliente, string logradouro, string numero, string complemento, string cidade,string estado, string pais, string cEP)
         {
-            IdEndereco = id;
+            Id = id;
             ClienteId = idCliente;
             Logradouro = logradouro;
             Numero = numero;
@@ -23,7 +23,7 @@ namespace Api.Core.Models
             CEP = cEP;
         }
 
-        public int IdEndereco { get; set; }
+        public int Id { get; set; }
         public long ClienteId { get; set; }
         public string Logradouro { get; set; }
         public string Numero { get; set; }
@@ -43,7 +43,7 @@ namespace Api.Core.Models
         public bool IsValidoForUpdate()
         {
             ValidationResult = _validation.Valid(this);
-            if (IdEndereco < 1)
+            if (Id < 1)
                 ValidationResult.Add("Endereço sem Id informado para alteração");
 
             return ValidationResult.IsValid;

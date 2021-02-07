@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -48,10 +47,10 @@ namespace Api.Controllers
 
                 return Ok(cliente);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError($"Consulta ao Cpf: {cpf} falhou com o seguinte erro: {ex}");
-                return StatusCode((int)HttpStatusCode.InternalServerError,"Ocorreu um erro ao processar a solicitação");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Ocorreu um erro ao processar a solicitação");
             }
         }
     }

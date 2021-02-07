@@ -8,7 +8,7 @@ namespace Api.Core.Contracts.Facades
 {
     public interface IEstadoFacade
     {
-        Task<IEnumerable<EstadoUF>> ListarUFs();
-        Task<IEnumerable<MunicipioDTO>> ListarMunicipiosPorEstado(int idEstado);
+        Task<IEnumerable<EstadoUF>> ListarEstadosAsync();
+        Task<IEnumerable<Municipio>> ListarMunicipiosPorEstadoAsync(int idEstado);
     }
 }

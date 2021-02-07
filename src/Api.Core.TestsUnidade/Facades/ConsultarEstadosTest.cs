@@ -33,7 +33,7 @@ namespace Api.Core.TestsUnidade
             IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao,restMock.Object);
 
             // Act
-            IEnumerable<EstadoUF> estados= await estadoFacade.ListarUFs();
+            IEnumerable<EstadoUF> estados= await estadoFacade.ListarEstadosAsync();
 
             // Assert
             Assert.Equal(27,estados.Count());
@@ -50,7 +50,7 @@ namespace Api.Core.TestsUnidade
             IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao, restMock.Object);
 
             // Act
-            IEnumerable<EstadoUF> estados = await estadoFacade.ListarUFs();
+            IEnumerable<EstadoUF> estados = await estadoFacade.ListarEstadosAsync();
 
             // Assert
             Assert.Empty(estados);
@@ -67,7 +67,7 @@ namespace Api.Core.TestsUnidade
             IEstadoFacade estadoFacade = new EstadoFacade(logger.Object, optionsOrdenacao, restMock.Object);
 
             // Act
-            IEnumerable<EstadoUF> estados = await estadoFacade.ListarUFs();
+            IEnumerable<EstadoUF> estados = await estadoFacade.ListarEstadosAsync();
 
             // Assert
             Assert.Empty(estados);

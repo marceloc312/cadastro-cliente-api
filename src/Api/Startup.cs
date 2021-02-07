@@ -40,7 +40,6 @@ namespace Api
         {
             services.AddControllers();
 
-            services.AddTransient<IClienteService, ClienteService>();
 
             services.Configure<ParametroRestConsultaCEP>(Configuration.GetSection("ParametroConsultaCEP"));
             services.Configure<ParametroRestConsultaEstado>(Configuration.GetSection("ParametroRestConsultaEstado"));
@@ -52,7 +51,11 @@ namespace Api
             services.AddTransient<IEstadoFacade, EstadoFacade>();
             
             services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IEnderecoClienteRepository, EnderecoClienteRepository>();            
 
+            services.AddTransient<IClienteService, ClienteService>();
+            services.AddTransient<IEnderecoClienteService, EnderecoClienteService>();
+            
             services.AddScoped<IConnectionFactoryDatabase>(x =>
             {
                 var connectionString = Configuration.GetSection("ConnectionStrings:MySql").Value;

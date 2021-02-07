@@ -30,14 +30,14 @@ namespace Api.Core.TestsUnidade
         {
             // Arrange
             var enderecos = MockJsonValues.Enderecos();
-            var enderecoClienteRepository = new Mock<IEnderecoClienteRepositoryReadOnly>();
+            var enderecoClienteRepository = new Mock<IEnderecoClienteRepository>();
             enderecoClienteRepository.Setup(x => x.BuscarPorIdClienteAsync(It.IsAny<long>())).ReturnsAsync((long id) => enderecos.Where(w => w.ClienteId == id));
-            var logger = new Mock<ILogger<EnderecoClienteServiceReadOnly>>();
+            var logger = new Mock<ILogger<EnderecoClienteService>>();
 
-            IEnderecoClienteServiceReadonly enderecoClienteService = new EnderecoClienteServiceReadOnly(logger.Object, enderecoClienteRepository.Object);
+            IEnderecoClienteService enderecoClienteService = new EnderecoClienteService(logger.Object, enderecoClienteRepository.Object);
 
             // Act
-            IEnumerable<EnderecoCliente> enderecoCliente = await enderecoClienteService.BuscaEnderecosPorIdCliente(idCliente);
+            IEnumerable<EnderecoCliente> enderecoCliente = await enderecoClienteService.BuscaEnderecosPorIdClienteAsync(idCliente);
 
             // Assert
             Assert.Equal(qtdEnderecosExistente, enderecoCliente.Count());
@@ -50,14 +50,14 @@ namespace Api.Core.TestsUnidade
         public async void NaoDeveRetonarClienteEDeveLogarErro(long idCliente)
         {
             // Arrange
-            var enderecoClienteRepository = new Mock<IEnderecoClienteRepositoryReadOnly>();
+            var enderecoClienteRepository = new Mock<IEnderecoClienteRepository>();
             enderecoClienteRepository.Setup(x => x.BuscarPorIdClienteAsync(It.IsAny<long>())).ThrowsAsync(new Exception("Exceção de banco de dados"));
-            var logger = new Mock<ILogger<EnderecoClienteServiceReadOnly>>();
+            var logger = new Mock<ILogger<EnderecoClienteService>>();
 
-            IEnderecoClienteServiceReadonly enderecoClienteService = new EnderecoClienteServiceReadOnly(logger.Object, enderecoClienteRepository.Object);
+            IEnderecoClienteService enderecoClienteService = new EnderecoClienteService(logger.Object, enderecoClienteRepository.Object);
 
             // Act
-            IEnumerable<EnderecoCliente> enderecosCliente = await enderecoClienteService.BuscaEnderecosPorIdCliente(idCliente);
+            IEnumerable<EnderecoCliente> enderecosCliente = await enderecoClienteService.BuscaEnderecosPorIdClienteAsync(idCliente);
 
             // Assert
             Assert.Empty(enderecosCliente);
