@@ -40,6 +40,7 @@ namespace Api
         {
             services.AddControllers();
 
+            services.AddHealthChecks();
 
             services.Configure<ParametroRestConsultaCEP>(Configuration.GetSection("ParametroConsultaCEP"));
             services.Configure<ParametroRestConsultaEstado>(Configuration.GetSection("ParametroRestConsultaEstado"));
@@ -99,6 +100,7 @@ namespace Api
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
 

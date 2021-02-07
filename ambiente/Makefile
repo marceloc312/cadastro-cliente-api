@@ -1,20 +1,17 @@
 
 api:
-	docker-compose -f docker-compose-api.yaml stop
-	docker-compose -f docker-compose-api.yaml build
-	docker-compose -f docker-compose-api.yaml up
+	docker-compose -f ./docker/docker-compose-api.yaml stop
+	docker-compose -f ./docker/docker-compose-api.yaml build
+	docker-compose -f ./docker/docker-compose-api.yaml up
 
-infra-create:
-	docker-compose -f ./docker/docker-compose-infra.yaml stop
-	docker-compose -f ./docker/docker-compose-infra.yaml build
-	docker-compose -f ./docker/docker-compose-infra.yaml up
+infra:
+	docker-compose -f ./docker/docker-compose-infra-db.yaml stop
+	docker-compose -f ./docker/docker-compose-infra-db.yaml build
+	docker-compose -f ./docker/docker-compose-infra-db.yaml up -d
 
-	docker-compose -f ./docker/docker-compose-logs.yaml stop 
-	docker-compose -f ./docker/docker-compose-logs.yaml build
-	docker-compose -f ./docker/docker-compose-logs.yaml up
-
-infra-start:
+init:
+	make infra
+	make api
+start:
 	docker start db-mysql
-	sysctl -w vm.max_map_count=262144
-	docker start elasticsearch
-	docker start kibana
+	docker start cadastro_cliente_api
