@@ -26,6 +26,7 @@ Para o desenvolvimento da aplicação foram utilizadas as seguintes tecnologias:
 * xUnit para Testes
 * Swagger
 * Docker
+* Docker Compose 3.7
 
 # Subindo o Ambiente em Container
 Toda a aplicação pode ser testada pelo usuário sem a necessidade de depuração de código, ou hospedagem, utilizando apenas containerização. No entanto, é necessário observar os pré-requisitos abaixo.
