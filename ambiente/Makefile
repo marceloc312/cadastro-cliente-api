@@ -36,7 +36,11 @@ stop:
 	
 reset:
 	make stop
+	#remove os containers
 	docker rm cadastro_cliente_api
 	docker rm kibana
 	docker rm elasticsearch
 	docker rm db-mysql
+	#remove as imagens
+	docker rmi cadastro_cliente_api
+	docker rmi db_mysql
