@@ -27,7 +27,7 @@ namespace Api.Controllers
             _clienteService = clienteService;
         }
 
-        [HttpGet("{cpf}")]
+        [HttpGet("cpf/{cpf}")]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.OK, Type = typeof(Cliente))]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.NotFound)]

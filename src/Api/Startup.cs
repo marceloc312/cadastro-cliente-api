@@ -17,12 +17,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Extensions.Logging;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Serilog.Sinks.Elasticsearch;
 
 namespace Api
 {
@@ -31,6 +34,15 @@ namespace Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            var elasticUrl = Configuration.GetSection("ElasticConfiguration:Url").Value;
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUrl))
+                {
+                    AutoRegisterTemplate = true,
+                })
+            .CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -41,22 +53,22 @@ namespace Api
             services.AddControllers();
 
             services.AddHealthChecks();
-
+            services.AddLogging();
             services.Configure<ParametroRestConsultaCEP>(Configuration.GetSection("ParametroConsultaCEP"));
             services.Configure<ParametroRestConsultaEstado>(Configuration.GetSection("ParametroRestConsultaEstado"));
             services.Configure<OrdenacaoEstados>(Configuration.GetSection("OrdenacaoEstados"));
-            
+
             services.AddTransient<IRestClientCEPService, RestClientCEPService>();
             services.AddTransient<IRestClientEstadoService, RestClientEstadoService>();
             services.AddTransient<ICepFacade, CepFacade>();
             services.AddTransient<IEstadoFacade, EstadoFacade>();
-            
+
             services.AddScoped<IClienteRepository, ClienteRepository>();
-            services.AddScoped<IEnderecoClienteRepository, EnderecoClienteRepository>();            
+            services.AddScoped<IEnderecoClienteRepository, EnderecoClienteRepository>();
 
             services.AddTransient<IClienteService, ClienteService>();
             services.AddTransient<IEnderecoClienteService, EnderecoClienteService>();
-            
+
             services.AddScoped<IConnectionFactoryDatabase>(x =>
             {
                 var connectionString = Configuration.GetSection("ConnectionStrings:MySql").Value;
@@ -66,31 +78,19 @@ namespace Api
             services.AddApiVersioning();
             services.AddSwaggerGen(options =>
             {
-            //    options.DocInclusionPredicate((docName, apiDesc) =>
-            //    {
-            //        if (!apiDesc.TryGetMethodInfo(out MethodInfo methodInfo)) return false;
-
-            //        var versions = methodInfo.DeclaringType
-            //            .GetCustomAttributes(true)
-            //            .OfType<ApiVersionAttribute>()
-            //            .SelectMany(attr => attr.Versions);
-
-            //        return versions.Any(v => $"v{v.ToString()}" == docName);
-            //    });
-
-            //    options.DocumentFilter<TagDescriptionsDocumentFilter>();
                 options.OperationFilter<AddInfoToParamVersionOperationFilter>();
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Api Cliente", Description = "Documentação Api Cadastro Básico Cliente", Version = "1.0" });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            loggerFactory.AddSerilog();
 
             app.UseHttpsRedirection();
 
@@ -109,17 +109,6 @@ namespace Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
             });
-        }
-    }
-
-    public class TagDescriptionsDocumentFilter : IDocumentFilter
-    {
-        public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
-        {
-            swaggerDoc.Tags = new[] {
-            new OpenApiTag { Name = "Livros", Description = "Consulta e mantém os livros." },
-            new OpenApiTag { Name = "Listas", Description = "Consulta as listas de leitura." }
-        };
         }
     }
 }

@@ -10,6 +10,7 @@ services:
       - ParametroConsultaCEP:TemplateResource=ws/{0}/json/
       - ParametroRestConsultaEstado:Url=https://servicodados.ibge.gov.br/api/v1/localidades/estados/
       - ParametroRestConsultaEstado:TemplateResource={0}/municipios
+      - ElasticConfiguration:Url=http://elasticsearch:9200
     ports:
       - "8080:80"
     networks:
