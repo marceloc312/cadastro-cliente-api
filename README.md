@@ -33,7 +33,7 @@ Toda a aplicação pode ser testada pelo usuário sem a necessidade de depuraç�
 
 # Pré-requisitos
 * Para os ambientes Windows e Mac OS, é necessário ter o Docker Desktop For Windows/Mac, e o GNU instalados. 
-* Para a execução no Linux é necessário o Docker juntamente com o docker-compose versão 1.26.2.
+* Para a execução no Linux é necessário o Docker juntamente com o docker-compose versão 1.26.2+.
 
 # Instruções de execução
 
