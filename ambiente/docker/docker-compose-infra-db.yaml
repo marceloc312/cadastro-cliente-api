@@ -1,13 +1,34 @@
 version: '3.7'
 services:
-    db:
-        container_name: db-mysql
-        command: --default-authentication-plugin=mysql_native_password
-        restart: always
-        environment:
-            MYSQL_ROOT_PASSWORD: senha1234
-        build:
-            context: ../mysql
-            dockerfile: Dockerfile
-        ports:
-            - "3306:3306"
+  dbmysql:
+    container_name: db-mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: senha1234
+    build:
+      context: ../mysql
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
+    networks:
+      - docker-network
+  api:
+    container_name: cadastro_cliente_api
+    build: ../../src
+    image: cadastro_cliente_api
+    environment:
+      - ConnectionStrings:MySql=Server=dbmysql; Port=3306; Database=cad; Uid=root; Pwd=senha1234;
+      - ParametroConsultaCEP:Url=https://viacep.com.br/
+      - ParametroConsultaCEP:TemplateResource=ws/{0}/json/
+      - ParametroRestConsultaEstado:Url=https://servicodados.ibge.gov.br/api/v1/localidades/estados/
+      - ParametroRestConsultaEstado:TemplateResource={0}/municipios
+    ports:
+      - "8080:80"
+    depends_on:
+      - dbmysql
+    networks:
+      - docker-network
+networks:
+  docker-network:
+    driver: bridge

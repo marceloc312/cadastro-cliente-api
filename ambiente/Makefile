@@ -7,11 +7,11 @@ api:
 infra:
 	docker-compose -f ./docker/docker-compose-infra-db.yaml stop
 	docker-compose -f ./docker/docker-compose-infra-db.yaml build
-	docker-compose -f ./docker/docker-compose-infra-db.yaml up -d
+	docker-compose -f ./docker/docker-compose-infra-db.yaml up
 
 init:
 	make infra
-	make api
+	#make api
 start:
 	docker start db-mysql
 	docker start cadastro_cliente_api
