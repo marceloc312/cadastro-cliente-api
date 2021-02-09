@@ -5,9 +5,9 @@ api:
 	docker-compose -f ./docker/docker-compose-api.yaml up
 
 infra:
-	docker-compose -f ./docker/docker-compose-infra-db.yaml stop
-	docker-compose -f ./docker/docker-compose-infra-db.yaml build
-	docker-compose -f ./docker/docker-compose-infra-db.yaml up -d
+	docker-compose -f ./docker/docker-compose-db.yaml stop
+	docker-compose -f ./docker/docker-compose-db.yaml build
+	docker-compose -f ./docker/docker-compose-db.yaml up -d
 
 init:
 	make infra

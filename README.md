@@ -26,19 +26,20 @@ Para o desenvolvimento da aplicação foram utilizadas as seguintes tecnologias:
 * xUnit para Testes
 * Swagger
 * Docker
+* Docker Compose 3.7
 
 # Subindo o Ambiente em Container
 Toda a aplicação pode ser testada pelo usuário sem a necessidade de depuração de código, ou hospedagem, utilizando apenas containerização. No entanto, é necessário observar os pré-requisitos abaixo.
 
 # Pré-requisitos
 * Para os ambientes Windows e Mac OS, é necessário ter o Docker Desktop For Windows/Mac, e o GNU instalados. 
-* Para a execução no Linux é necessário o Docker juntamente com o docker-compose.
+* Para a execução no Linux é necessário o Docker juntamente com o docker-compose versão 1.26.2.
 
 # Instruções de execução
 
 Utilize a ferramente de linha de comando que preferir.
 1. Clone o repositório em uma pasta vazia com o seguinte comando: git clone git@github.com:marceloc312/cadastro-cliente-api.git
-2. Na ferramente de linha de comando, navegue até a pasta do repositório e vá até a pasta ambiente. Exemplo: *cd .\teste-pan\ambiente\*
+2. Na ferramente de linha de comando, navegue até a pasta do repositório e vá até a pasta ambiente. Exemplo: cd .\teste-pan\ambiente\
 3. Digite o comando *make init*. Esse comando faz o build da imagem docker da Api, cria a infraestrutura de banco de dados, popula as tabelas com os dados necessários para os testes e sobe os containers.
 
 Prontinho! Basta testar a aplicação.
