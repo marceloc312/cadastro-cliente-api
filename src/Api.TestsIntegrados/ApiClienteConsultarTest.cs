@@ -2,8 +2,8 @@ using Api.Core.Models;
 using Api.TestsIntegrados.Configurations;
 using FluentAssertions;
 using Newtonsoft.Json;
-using System;
 using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Api.TestsIntegrados
@@ -15,6 +15,7 @@ namespace Api.TestsIntegrados
         private const string CPF_MARCELO = "93939714046";
         private const string CPF_TEREZA = "58939041097";
         private const string CPF_RENATA = "89781767049";
+        private const string requestUriCpf = "/api/v1.0/cliente/cpf/";
 
         private readonly IntegrationTestFixture<Startup> _integrationTestFixture;
         public ApiClienteConsultarTest(IntegrationTestFixture<Startup> integrationTestFixture)
@@ -24,20 +25,20 @@ namespace Api.TestsIntegrados
 
         [Theory(DisplayName = "Retorna o Cliente pelo CPF com sucesso")]
         [InlineData(CPF_MARCELO)]
-        [InlineData(CPF_TEREZA )]
+        [InlineData(CPF_TEREZA)]
         [InlineData(CPF_RENATA)]
         public async void ConsultaClienteComSucesso(string cpf)
         {
             // Arrange
 
             // Act
-            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/cliente/{cpf}");
+            var requisicao = await GetAsyncPorCpf(cpf);
             var resposta = await requisicao.Content.ReadAsStringAsync();
 
             // Assert
             requisicao.StatusCode.Should().Be(HttpStatusCode.OK);
             Assert.True(requisicao.IsSuccessStatusCode);
-           var cliente= JsonConvert.DeserializeObject<Cliente>(resposta);
+            var cliente = JsonConvert.DeserializeObject<Cliente>(resposta);
             cliente.CPF.Should().Be(cpf);
             cliente.Nome.Should().NotBeNullOrEmpty();
         }
@@ -50,7 +51,7 @@ namespace Api.TestsIntegrados
             // Arrange
 
             // Act
-            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/cliente/{cpf}");
+            var requisicao = await GetAsyncPorCpf(cpf);
             var resposta = await requisicao.Content.ReadAsStringAsync();
 
             // Assert
@@ -66,7 +67,7 @@ namespace Api.TestsIntegrados
             // Arrange
 
             // Act
-            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/cliente/{cpf}");
+            var requisicao = await GetAsyncPorCpf(cpf);
             var resposta = await requisicao.Content.ReadAsStringAsync();
 
             // Assert
@@ -80,11 +81,16 @@ namespace Api.TestsIntegrados
             // Arrange
 
             // Act
-            var requisicao = await _integrationTestFixture.Client.GetAsync($"/api/v1.0/cliente/{cpf}");
+            var requisicao = await GetAsyncPorCpf(cpf);
             var resposta = await requisicao.Content.ReadAsStringAsync();
 
             // Assert
             requisicao.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
+
+        private async Task<System.Net.Http.HttpResponseMessage> GetAsyncPorCpf(string cpf)
+        {
+            return await _integrationTestFixture.Client.GetAsync($"{requestUriCpf}{cpf}");
+        }
     }
-    }
+}

@@ -11,7 +11,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{hostApiCadastroCliente}}/api/v1.0/cliente/93939714046",
+					"raw": "http://{{hostApiCadastroCliente}}/api/v1.0/cliente/cpf/93939714046",
 					"protocol": "http",
 					"host": [
 						"{{hostApiCadastroCliente}}"
