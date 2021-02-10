@@ -43,7 +43,7 @@ namespace Api.TestsIntegrados
 
         [Theory(DisplayName = "Retorna o Endereço do Cliente pelo id do Endereço na rota cliente/{idCliente}/enderecos/{idEndereco}")]
         [InlineData(4, 5, "Rua Antonio Caserta")]
-        [InlineData(1, 2, "Rua CearÃ¡")]
+        [InlineData(1, 2, "Rua Cerqueira Cesar")]
         [InlineData(2, 3, "Avenida Santo Inacio")]
         public async void RetornaEnderecoPorIdNaRotaClienteID(int idCliente, int idEndereco, string assertLogradouro)
         {
