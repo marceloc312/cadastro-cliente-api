@@ -10,7 +10,8 @@ A Api de Cadastro de Cliente tem as responsabilidades listadas abaixo:
 * Recupera um endereço válido pelo CEP, utilizando a Api Via CEP.
 
 # Implementações adicionais
-* Todas as ações são logadas e podem ser vistas no console
+* Todas as ações são logadas e podem ser vistas no console e no Elasticsearch, utilizando a interface do Kibana, que pode ser acessado em http://localhost:5601/
+OBS.: PODE SER NECESSARIO AGUARDAR ALGUNS MINUTOS ATE QUEO ELASTICSEARCH ESTEJA ACESSIVEL.
 * Todos os erros são tratados e seguem o padrão de Design de Api, disponibilizado pela Microsoft
 * Todas as funcionalidades da aplicação são cobertas por Testes Unitários e Integrados
 * Foi implementado o padrão OpenApi 3.0, para disponibilizar a documentação online. O Swagger está disponível em: https://localhost:5001/swagger/index.html e http://localhost:5000/swagger/index.html para execução local, e no endereço http://localhost:8080/swagger/index.html, para execução no Docker,
@@ -27,6 +28,8 @@ Para o desenvolvimento da aplicação foram utilizadas as seguintes tecnologias:
 * Swagger
 * Docker
 * Docker Compose 3.7
+* Elasticsearch
+* Kibana
 
 # Subindo o Ambiente em Container
 Toda a aplicação pode ser testada pelo usuário sem a necessidade de depuração de código, ou hospedagem, utilizando apenas containerização. No entanto, é necessário observar os pré-requisitos abaixo.
@@ -40,7 +43,7 @@ Toda a aplicação pode ser testada pelo usuário sem a necessidade de depuraç�
 Utilize a ferramente de linha de comando que preferir.
 1. Clone o repositório em uma pasta vazia com o seguinte comando: git clone git@github.com:marceloc312/cadastro-cliente-api.git
 2. Na ferramente de linha de comando, navegue até a pasta do repositório e vá até a pasta ambiente. Exemplo: cd .\cadastro-cliente-api\ambiente\
-3. Digite o comando *make init*. Esse comando faz o build da imagem docker da Api, cria a infraestrutura de banco de dados, popula as tabelas com os dados necessários para os testes e sobe os containers.
+3. Digite o comando *make init*. Esse comando faz o build da imagem docker da Api, cria a infraestrutura de banco de dados, elasticsearch e kibana, popula as tabelas com os dados necessários para os testes e sobe os containers.
 
 Prontinho! Basta testar a aplicação.
 
