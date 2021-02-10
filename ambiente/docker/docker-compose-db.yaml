@@ -2,6 +2,7 @@ version: '3.7'
 services:
   dbmysql-cad:
     container_name: db-mysql
+    image: db_mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
