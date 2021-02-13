@@ -44,3 +44,25 @@ reset:
 	#remove as imagens
 	docker rmi cadastro_cliente_api
 	docker rmi db_mysql
+
+
+
+gc-up:
+	#prepara a imagem para o container
+	make api
+	docker tag cadastro_cliente_api gcr.io/devops-learn-304501/cadcliente-api:v1
+	docker push gcr.io/devops-learn-304501/cadcliente-api:v1
+
+	#kubernetes
+	gcloud container clusters create cadclienteapi
+	kubectl apply -f deployment.yaml
+	kubectl apply -f service.yaml
+
+k8s-down:
+	#kubernetes
+	kubectl delete deployments cadcliente-api-deployment
+	kubectl delete services cadcliente-api-service
+	gcloud container clusters delete cadclienteapi
+
+	#exclui a imagem do Gogle Artifact Registry
+	gcloud container images delete gcr.io/devops-learn-304501/cadcliente-api:v1  --force-delete-tags --quiet

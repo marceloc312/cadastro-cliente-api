@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cadcliente-api-deployment
+  labels:
+    app: cadcliente-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cadcliente-api
+  template:
+    metadata:
+      labels:
+        app: cadcliente-api
+    spec:
+      containers:
+      - name: cadcliente-api
+        image: gcr.io/devops-learn-304501/cadcliente-api:v1
+        ports:
+          - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
