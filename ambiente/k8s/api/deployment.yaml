@@ -17,6 +17,12 @@ spec:
       containers:
       - name: cadcliente-api
         image: gcr.io/devops-learn-304501/cadcliente-api:v1
+        env:
+          - name: ConnectionStrings__MySql
+            valueFrom:
+              secretKeyRef:
+                name: cadcliente-api-secret
+                key: ConnectionStrings__MySql
         ports:
           - containerPort: 80
         livenessProbe:

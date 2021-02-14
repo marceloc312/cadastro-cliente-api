@@ -35,14 +35,22 @@ namespace Api
         {
             Configuration = configuration;
 
-            var elasticUrl = Configuration.GetSection("ElasticConfiguration:Url").Value;
-            Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUrl))
-                {
-                    AutoRegisterTemplate = true,
-                })
-            .CreateLogger();
+            if (ElasticIsEnabled())
+            {
+                var elasticUrl = Configuration.GetSection("ElasticConfiguration:Url").Value;
+                Log.Logger = new LoggerConfiguration()
+                    .Enrich.FromLogContext()
+                    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUrl))
+                    {
+                        AutoRegisterTemplate = true,
+                    })
+                .CreateLogger();
+            }
+        }
+
+        private bool ElasticIsEnabled()
+        {
+            return bool.Parse(Configuration.GetSection("ElasticConfiguration:Enabled").Value);
         }
 
         public IConfiguration Configuration { get; }
@@ -53,7 +61,8 @@ namespace Api
             services.AddControllers();
 
             services.AddHealthChecks();
-            services.AddLogging();
+            if (ElasticIsEnabled())
+                services.AddLogging();
             services.Configure<ParametroRestConsultaCEP>(Configuration.GetSection("ParametroConsultaCEP"));
             services.Configure<ParametroRestConsultaEstado>(Configuration.GetSection("ParametroRestConsultaEstado"));
             services.Configure<OrdenacaoEstados>(Configuration.GetSection("OrdenacaoEstados"));
@@ -79,7 +88,7 @@ namespace Api
             services.AddSwaggerGen(options =>
             {
                 options.OperationFilter<AddInfoToParamVersionOperationFilter>();
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Api Cliente", Description = "Documentação Api Cadastro Básico Cliente", Version = "1.0" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Api Cliente", Description = "Documentaï¿½ï¿½o Api Cadastro Bï¿½sico Cliente", Version = "1.0" });
             });
         }
 
@@ -90,7 +99,8 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            loggerFactory.AddSerilog();
+            if (ElasticIsEnabled())
+                loggerFactory.AddSerilog();
 
             app.UseHttpsRedirection();
 
