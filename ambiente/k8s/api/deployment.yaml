@@ -17,13 +17,27 @@ spec:
       containers:
       - name: cadcliente-api
         image: gcr.io/devops-learn-304501/cadcliente-api:v1
+        env:
+          - name: ConnectionStrings__MySql
+            valueFrom:
+              secretKeyRef:
+                name: cadcliente-api-secret
+                key: ConnectionStrings__MySql
         ports:
           - containerPort: 80
         livenessProbe:
           httpGet:
             path: /health
             port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 10
+          failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /health
             port: 80
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+          periodSeconds: 10
+          failureThreshold: 3

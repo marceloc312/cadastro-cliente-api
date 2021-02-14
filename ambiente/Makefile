@@ -45,23 +45,72 @@ reset:
 	docker rmi cadastro_cliente_api
 	docker rmi db_mysql
 
+#--->> KUBERNETES
+#LOGS: ELASTICSEARCH, KIBANA
+kslogs-up:
+	#Cria infra Logs
+	kubectl apply -f ./k8s/infra/logs/elasticsearch-ss.yaml
+	kubectl apply -f ./k8s/infra/logs/kibana-deployment.yaml
 
+kslogs-down:
+	#Delete Logs
+	kubectl delete statefulsets elasticsearch-logging
+	kubectl delete services elasticsearch-logging
+	#kubectl delete deployments kibana-logging
+	#kubectl delete services kibana-logging
 
-gc-up:
+# DATABASE: MYSQL
+ksdb-up:
+	#Cria infra banco de dados
+	kubectl apply -f ./k8s/infra/mysql/pv.yaml
+	kubectl apply -f ./k8s/infra/mysql/deployment.yaml
+	kubectl apply -f ./k8s/infra/mysql/loadbalance.yaml
+
+ksdb-down:
+	kubectl delete deployments mysql
+	kubectl delete services mysql
+	kubectl delete PersistentVolumeClaim mysql-pv-claim
+
+#API
+ksapi-up:
+	#Cria Api
+	kubectl apply -f ./k8s/api/secrets.yaml
+	kubectl apply -f ./k8s/api/deployment.yaml
+	kubectl apply -f ./k8s/api/loadbalance.yaml
+
+ksapi-down:
+	kubectl delete deployments cadcliente-api-deployment
+	kubectl delete services cadcliente-api-service
+	kubectl delete secrets cadcliente-api-secret
+
+gcks-up:
+	gcloud container clusters create cadclienteapi
+	make kslogs-up
+	make ksdb-up
+	make ksapi-up
+
+gcup:
 	#prepara a imagem para o container
-	make api
-	docker tag cadastro_cliente_api gcr.io/devops-learn-304501/cadcliente-api:v1
+	#make api
+	#docker tag cadastro_cliente_api gcr.io/devops-learn-304501/cadcliente-api:v1
 	docker push gcr.io/devops-learn-304501/cadcliente-api:v1
 
 	#kubernetes
-	gcloud container clusters create cadclienteapi
-	kubectl apply -f deployment.yaml
-	kubectl apply -f service.yaml
+	make gcks-up
+gcapi-up:
+	make api
+	docker tag cadastro_cliente_api gcr.io/devops-learn-304501/cadcliente-api:v1
+	docker push gcr.io/devops-learn-304501/cadcliente-api:v1
+	make ksapi-up
 
 k8s-down:
 	#kubernetes
-	kubectl delete deployments cadcliente-api-deployment
-	kubectl delete services cadcliente-api-service
+	make ksapi-down
+	make kslogs-down
+	make ksdb-down
+
+gcdown-all:
+	make k8s-down
 	gcloud container clusters delete cadclienteapi
 
 	#exclui a imagem do Gogle Artifact Registry
